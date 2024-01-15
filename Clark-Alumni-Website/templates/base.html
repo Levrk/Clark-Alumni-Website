@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no">
+    <link href="/try.css" type="text/css"/>
+    <title>CS-Alumni Website</title>
+    {% include "bootstrap.html" %}
+    <style>
+        /* Global styles */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Common styles for text-like inputs */
+        input[type=text], input[type=email], input[type=tel], input[type=url], select, textarea {
+            width: 65%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            resize: vertical;
+        }
+
+        /* Checkbox styles */
+        input[type=checkbox] {
+            width: 16px;
+            height: 16px;
+            padding: 3px;
+            border: 0px solid #ccc;
+            border-radius: 0px;
+            box-sizing: border-box;
+            margin-top: 10px;
+            margin-bottom: 16px;
+            resize: vertical;
+        }
+
+        /* Button styles */
+        input[type=submit], input[type=reset], input[view] {
+            background-color: #cc0808;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Label styles */
+        label {
+            display: inline-block;
+            width: 25%;
+            text-align: left;
+            padding-right: 10px;
+            margin-bottom: 6px;
+        }
+
+        /* Additional styles for textarea */
+        textarea {
+            width: 65%;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            input[type=text], input[type=email], input[type=tel], input[type=url], select, textarea {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            textarea {
+                max-width: 100%;
+            }
+        }
+
+        /* Global styles */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Common styles for text-like inputs */
+        input[type=text], input[type=email], input[type=tel], input[type=url], select, textarea {
+            width: 65%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            resize: vertical;
+        }
+
+        /* Checkbox styles */
+        input[type=checkbox] {
+            width: 16px;
+            height: 16px;
+            padding: 3px;
+            border: 0px solid #ccc;
+            border-radius: 0px;
+            box-sizing: border-box;
+            margin-top: 10px;
+            margin-bottom: 16px;
+            resize: vertical;
+        }
+
+        /* Button styles */
+        input[type=submit], input[type=reset], #viewRequests {
+            background-color: #cc0808;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Label styles */
+        label {
+            display: inline-block;
+            width: 25%;
+            text-align: left;
+            padding-right: 10px;
+            margin-bottom: 6px;
+        }
+
+        /* Additional styles for textarea */
+        textarea {
+            width: 65%;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            input[type=text], input[type=email], input[type=tel], input[type=url], select, textarea {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            textarea {
+                max-width: 100%;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<!--Navigation bar-->
+{% load static %}
+{% if user.is_authenticated %}
+    {% include "navbar.html" %}
+
+    <br>
+    <div class="container">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <h4><b>Help Requested</b></h4>
+            <input type="checkbox" id="coverLetter" name="cover_letter">
+            <label for="coverLetter" style="margin-left: 7px;">Cover Letter</label>
+            <input type="checkbox" id="careerPlanning" name="career_planning">
+            <label for="careerPlanning" style="margin-left: 7px;">Career Planning</label>
+            <br>
+            <input type="checkbox" id="resume" name="resume">
+            <label for="resume" style="margin-left: 7px;">Resume</label>
+            <input type="checkbox" id="mentorShadowing" name="mentor_shadowing">
+            <label for="mentorShadowing" style="margin-left: 7px;">Mentor Shadowing</label>
+            <br>
+            <input type="checkbox" id="mockInterview" name="mock_interview">
+            <label for="mockInterview" style="margin-left: 7px;">Mock Interview</label>
+            <input type="checkbox" id="other" name="other">
+            <label for="others" style="margin-left: 7px;">Other</label>
+            <br><br><br>
+
+            <!--Input Fields-->
+            <label for="documentLink">Link to document:</label>
+            <input type="url" id="documentLink" name="document_link" placeholder="Link to Google Drive or OneDrive pdf only" size="15">
+
+            <br>
+            <label for="jobInterest">Job Interest:</label>
+            <input type="text" id="jobInterest" name="job_interest" placeholder="Your job interests.." maxlength="50"
+                   size="15">
+            <br>
+            <label for="industryInterest">Industry Interest:</label>
+            <input type="text" id="industryInterest" name="industry_interest" placeholder="Your industry interests.."
+                   maxlength="50" size="15">
+            <br>
+            <label for="supportUrgency">When do you hope to receive the support?</label>
+            <select id="supportUrgency" name="support_urgency">
+                <option value="within_1_week">Within 1 Week</option>
+                <option value="within_2_weeks">Within 2 Weeks</option>
+                <option value="within_1_month">Within 1 Month</option>
+                <option value="within_2_months">Within 2 Months</option>
+                <option value="no_urgent_need" selected>No Urgent Need</option>
+            </select>
+            <br>
+            <label for="comments">Comments:</label>
+            <textarea id="comments" name="comments" placeholder="Your comments here.." rows="6" cols="50"
+                      maxlength="256"></textarea>
+            <br>
+            <input type="reset" value="Reset">
+            <input type="submit" value="Submit" id="submit-button" onclick="return validateForm();">
+            <br>
+            <br>
+
+        </form>
+    </div>
+    <script>
+       function validateForm() {
+    var coverLetter = document.getElementById("coverLetter").checked;
+    var resume = document.getElementById("resume").checked;
+    var careerPlanning = document.getElementById("careerPlanning").checked;
+    var other = document.getElementById("other").checked;
+    var mentorShadowing = document.getElementById("mentorShadowing").checked;
+    var mockInterview = document.getElementById("mockInterview").checked;
+    var comments = document.getElementById("comments").value.trim();
+
+    if (!coverLetter && !resume && !mentorShadowing && !mockInterview && !other && !careerPlanning) {
+        alert("Please select at least one category for assistance.");
+        return false;
+    }
+
+    var documentLink = document.getElementById("documentLink").value.trim();
+
+    if ((coverLetter || resume) && !isValidDocumentLink(documentLink)) {
+        alert("Please provide a valid Google Drive, OneDrive, or SharePoint link for Cover Letter or Resume.");
+        return false;
+    }
+
+    if ((other) && !comments) {
+        alert("Please provide detailed information in the comments section below to help us better understand your specific needs.");
+        return false;
+    }
+
+    return true;
+}
+
+function isValidDocumentLink(url) {
+    // Regular expressions to match Google Drive, OneDrive, and SharePoint links
+    var googleDriveRegex = /^https:\/\/drive\.google\.com\/.*$/;
+    var oneDriveRegex = /^https:\/\/onedrive\.live\.com\/.*$/;
+    var sharepointRegex = /^https:\/\/.*\.sharepoint\.com\/.*$/;
+
+    return googleDriveRegex.test(url) || oneDriveRegex.test(url) || sharepointRegex.test(url);
+}
+
+</script>
+
+
+    <div class="container">
+        {% if form_submitted %}
+            <p>Thank you for submitting your career advancement support request!</p>
+            <a href="{% url 'viewmyrequests' %}" id="viewRequests" class="btn btn-primary viewRequests">View My
+                Requests</a>
+        {% endif %}
+    </div>
+{% endif %}
+</body>
+</html>

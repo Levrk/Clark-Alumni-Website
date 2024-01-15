@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  alumni_backend:
+    build: .
+    ports:
+      - "8000:8000"
+    command: ["./docker-start.sh"]
+    volumes:
+      - .:/app/
+    depends_on:
+      - db
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+volumes:
+  postgres_data:

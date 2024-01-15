@@ -1,0 +1,193 @@
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student's Requests</title>
+
+    {% include "bootstrap.html" %}
+
+    <style>
+        body {
+            background-image: url('/static/background1.jpeg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+            max-width: 150px; /* Adjust the maximum width for columns as needed */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 14px; /* Adjust the font size as needed */
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        th {
+            background-color: #cc0808;
+            color: white;
+        }
+
+        th[data-header="centered"] {
+            text-align: center;
+        }
+
+        td[data-cell="centered"] {
+            text-align: center;
+        }
+
+        .action-button {
+            background-color: #cc0808;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .action-button:hover {
+            background-color: #990000;
+        }
+
+        .search-container input {
+            width: 100px;
+            padding: 6px;
+            font-size: 12px;
+        }
+
+        .clear-search {
+            font-size: 12px;
+        }
+
+        .text-border {
+            border: 1px solid black;
+            display: inline-block;
+            padding: 5px; /* Adjust padding as needed */
+            color: red; /* Text color */
+        }
+    </style>
+</head>
+<body>
+
+{% include "navbar.html" %}
+<br>
+<div class="container">
+    <h3 class="text-center">
+        Unassigned student requests: <span id="totalCount"></span>
+    </h3>
+</div>
+<table class="table table-bordered table-striped mt-3" id="myTable">
+    <thead class="bg-danger">
+    <tr>
+        <th data-header="centered" class="sortable" data-column="0" onclick="sortTable(0)">Submitted<br>Date</th>
+        <th data-header="centered">Name</th>
+        <th data-header="centered">Urgency</th>
+        <th data-header="centered">Help Requested</th>
+        <th data-header="centered" data-cell="centered">Comments</th>
+        <th data-header="centered" data-cell="centered">Job<br>Interest</th>
+        <th data-header="centered" data-cell="centered">Industry<br>Interest</th>
+        <th data-header="centered">Document<br>Link</th>
+        <th data-header="centered">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <div class="search-container">
+                <input type="text" id="searchDate" oninput="handleSearch('searchDate', 0)"
+                       onkeypress="searchOnEnter(event, 'searchDate')" placeholder="contains...">
+                <span class="clear-search" onclick="clearSearch('searchDate')">&#10006;</span>
+            </div>
+        </td>
+        <td>
+            <div class="search-container">
+                <input type="text" id="searchStudent" oninput="handleSearch('searchStudent', 1)"
+                       onkeypress="searchOnEnter(event, 'searchDate')" placeholder="contains...">
+                <span class="clear-search" onclick="clearSearch('searchStudent')">&#10006;</span>
+            </div>
+        </td>
+        <td>
+            <div class="search-container">
+                <input type="text" id="searchUrgency" oninput="handleSearch('searchUrgency', 2)"
+                       onkeypress="searchOnEnter(event, 'searchUrgency')" placeholder="contains...">
+                <span class="clear-search" onclick="clearSearch('searchUrgency')">&#10006;</span>
+            </div>
+        </td>
+        <td>
+            <div class="search-container">
+                <input type="text" id="searchHelpRequested" oninput="handleSearch('searchHelpRequested', 3)"
+                       onkeypress="searchOnEnter(event, 'searchHelpRequested')" placeholder="contains...">
+                <span class="clear-search" onclick="clearSearch('searchHelpRequested')">&#10006;</span>
+            </div>
+        </td>
+        <td>
+            <div class="search-container">
+                <input type="text" id="searchJobs" oninput="handleSearch('searchJobs', 4)"
+                       onkeypress="searchOnEnter(event, 'searchJobs')" placeholder="contains...">
+                <span class="clear-search" onclick="clearSearch('searchJobs')">&#10006;</span>
+            </div>
+        </td>
+        <td>
+            <div class="search-container">
+                <input type="text" id="searchIndustry" oninput="handleSearch('searchIndustry', 5)"
+                       onkeypress="searchOnEnter(event, 'searchJobs')" placeholder="contains...">
+                <span class="clear-search" onclick="clearSearch('searchIndustry')">&#10006;</span>
+            </div>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    {% for request in submitted_requests %}
+        <tr>
+            <td data-cell="centered">{{ request.submission_date | date:"m/d/Y" }}</td>
+            <td data-cell="centered">{{ request.student.first_name }} {{request.student.last_name }}</td>
+            <td data-cell="centered">{{ request.support_urgency|lower|replace_underscore_with_space|capfirst }}</td>
+            <td data-cell="centered">{% for field in request.help_requested_list_display %}
+                {{ field }}<br>
+             {% endfor %}</td>
+            <td data-cell="centered"><span
+                    title="{{ request.comments|default:'-' }}">{{ request.comments|default:'-' }}</span></td>
+            <td data-cell="centered">{{ request.job_interest|default:"-" }}</td>
+            <td data-cell="centered">{{ request.industry_interest|default:"-" }}</td>
+            <td data-cell="centered">
+                {% if request.document_link %}
+                    <a href="{{ request.document_link }}">Document Link</a>
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td data-cell="centered">
+                <form method="post" action="{% url 'status_change_assigned' request.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="status" value="assigned">
+                    <input type="hidden" name="email" value="{{ request.student }}">
+                    <button type="submit" class="action-button">Take It</button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% include "tableFunctions.html" %}
+</body>
+</html>

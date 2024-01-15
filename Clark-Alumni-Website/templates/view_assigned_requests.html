@@ -1,0 +1,313 @@
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assigned Requests</title>
+
+    {% include "bootstrap.html" %}
+
+    <style>
+        body {
+            background-image: url('/static/background1.jpeg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        table {
+        border-collapse: collapse;
+        width: 100%;
+        font-family: Arial, sans-serif;
+    }
+
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+        max-width: 150px; /* Adjust the maximum width for columns as needed */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 14px; /* Adjust the font size as needed */
+        vertical-align: middle;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    th {
+        background-color: #cc0808;
+        color: white;
+    }
+
+    th[data-header="centered"] {
+        text-align: center;
+    }
+
+    td[data-cell="centered"] {
+        text-align: center;
+    }
+
+    .action-button {
+        background-color: #cc0808;
+        color: white; /* White text color */
+        border: none; /* Remove the border */
+        padding: 8px 12px; /* Add some padding to the button */
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin-right: 10px; /* Add spacing between buttons */
+        font-size: 14px; /* Adjust the font size as needed */
+        border-radius: 4px; /* Add rounded corners */
+        cursor: pointer;
+        transition: background-color 0.3s ease; /* Add a smooth hover effect */
+        width: 120px;
+    }
+    .action-button:hover {
+        background-color: #990000; /* Darker red color on hover */
+    }
+        .search-container input {
+    width: 100px; /* Adjust the width as needed */
+    padding: 6px; /* Adjust the padding as needed */
+    font-size: 12px; /* Adjust the font size as needed */
+    }
+
+    .clear-search {
+        font-size: 12px; /* Adjust the font size as needed */
+    }
+
+.comment-cell {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.comments-popup {
+    position: absolute;
+    background-color: #f1f1f1;
+    padding: 0px;
+    max-height: 200px; /* Set a fixed height for the container */
+    overflow-y: auto; /* Enable vertical scrolling */
+    width: 300px; /* Set a wider width for the popup */
+}
+
+.comments-container {
+
+    margin: 0px; /* Remove default margin */
+    display: flex;
+    flex-direction: column; /* Make comments stack vertically */
+    white-space: pre-line;
+}
+
+.comment {
+    font-size: 14px; /* Adjust the font size as needed */
+    margin-bottom: 10px; /* Add margin between individual comments */
+}
+
+    .close-comments-button {
+        /* Position the close button at the top-right corner */
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 5px;
+        cursor: pointer;
+        background-color: #990000;
+        border: none;
+        font-size: 16px;
+    }
+
+            .reset-columns-link {
+            position: relative;
+            color: #000000; /* Adjust color as needed */
+            cursor: pointer;
+            font-size: 14px; /* Adjust the font size as needed */
+        }
+        
+        input[type=checkbox]{
+            accent-color: #990000;
+        }
+        
+        .dropdown-item:active {
+            background-color: #990000;
+        }
+    </style>
+<body>
+{% include "navbar.html" %}
+<br>
+<h3 class="text-center">
+    Requests assigned to me : <span id="totalCount"></span>
+</h3>
+
+<form action="" method="get">
+    {% csrf_token %}
+    {{formset.non_field_errors}}
+    <div class="form-check">
+        {{form.show_open}}
+        <label class="form-check-label" for="show_open">
+            Show Open Requests
+        </label>
+    </div>
+    <div class="form-check">
+        {{form.show_closed}}
+        <label class="form-check-label" for="showClosed">
+            Show Closed Requests
+        </label>
+    </div>
+</form>
+
+<table class="table table-bordered table-striped mt-3" id="myTable">
+    <thead class="bg-danger">
+    <tr>
+        <th class="sortable" data-column="0" onclick="sortTable(0)" data-header="centered">Submitted<br>Date</th>
+        <th data-header="centered">Request Status</th>
+        <th data-header="centered">Name</th>
+        <th data-header="centered">Urgency</th>
+        <th data-header="centered">Help Requested</th>
+        <th data-header="centered" data-cell="centered">Comments</th>
+        <th data-header="centered" data-cell="centered"> Job<br>Interest</th>
+        <th data-header="centered" data-cell="centered"> Industry<br>Interest</th>
+        <th data-header="centered">Document<br>Link</th>
+        <th data-header="centered">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <div class="search-container">
+                <input type="text" id="searchDate" oninput="handleSearch('searchDate', 0)"
+                       onkeypress="searchOnEnter(event, 'searchDate')" placeholder="contains...">
+                <span class="clear-search" onclick="clearSearch('searchDate')">&#10006;</span>
+            </div>
+        </td>
+        <td></td>
+        <td>
+            <div class="search-container">
+                <input type="text" id="searchStudent" oninput="handleSearch('searchStudent', 2)"
+                       onkeypress="searchOnEnter(event, 'searchDate')" placeholder="contains...">
+                <span class="clear-search" onclick="clearSearch('searchStudent')">&#10006;</span>
+            </div>
+        </td>
+        <td>
+            <div class="search-container">
+                <input type="text" id="searchUrgency" oninput="handleSearch('searchUrgency', 3)"
+                       onkeypress="searchOnEnter(event, 'searchUrgency')" placeholder="contains...">
+                <span class="clear-search" onclick="clearSearch('searchUrgency')">&#10006;</span>
+            </div>
+        </td>
+        <td>
+            <div class="search-container">
+                <input type="text" id="searchHelpRequested" oninput="handleSearch('searchHelpRequested', 4)"
+                       onkeypress="searchOnEnter(event, 'searchHelpRequested')" placeholder="contains...">
+                <span class="clear-search" onclick="clearSearch('searchHelpRequested')">&#10006;</span>
+            </div>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    {% for request in assigned_requests %}
+        <!-- View Comments Modal -->
+        <div class="modal fade" id="viewComments" tabindex="-1" aria-labelledby="viewCommentsLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title" id="viewCommentsLabel">View Comments</h1>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">x</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="comments-container">
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Add Comments Modal -->
+        <div class="modal fade" id="addComments" tabindex="-1" aria-labelledby="addCommentsLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title" id="addCommentsLabel">Add Comment</h1>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">x</button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="" class="dropdown-item commentsForm">
+                            {% csrf_token %}
+                            <textarea name="my_comments" class="myCommentsTextarea" style="min-width: 100%"></textarea>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-danger">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Table Start -->
+        <tr>
+            <td data-cell="centered">{{ request.submission_date | date:"m/d/Y" }}</td>
+            <td data-cell="centered">{{ request.get_status_display }}</td>
+            <td data-cell="centered">{{ request.student.first_name }} {{request.student.last_name }}</td>
+            <td data-cell="centered">{{ request.support_urgency|lower|replace_underscore_with_space|capfirst }}</td>
+            <td data-cell="centered">{% for field in request.help_requested_list_display %}
+                                        {{ field }}<br>
+                                     {% endfor %}</td>
+            <td data-cell="centered"><span
+                    title="{{ request.comments|default:'-' }}">{{ request.comments|default:'-' }}</span></td>
+            <td data-cell="centered">{{ request.job_interest|default:"-" }}</td>
+            <td data-cell="centered">{{ request.industry_interest|default:"-" }}</td>
+            <td data-cell="centered">
+                {% if request.document_link %}
+                    <a href="{{ request.document_link }}">Document Link</a>
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td data-cell="centered">
+                <button class="btn" type="button" id="actions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                        <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                        </svg>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <!-- Send Email -->
+                    {% if request.student %}
+                        <a href="mailto:{{ request.student }}" class="dropdown-item">Send Email</a>
+                    {% endif %}
+                    <!-- View Comments -->
+                    <button class="dropdown-item" data-toggle="modal" data-target="#viewComments" data-comments="{{request.my_comments}}">View Comments</button>
+                    {% if request.status != "closed" %}
+                        <!-- Add Comments -->
+                        <button class="dropdown-item" data-toggle="modal" data-target="#addComments" data-id="{{request.id}}">
+                            Add Comments
+                        </button>
+                        <!-- Unassign -->
+                        <form method="post" action="{% url 'status_change_unassigned' request.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="submitted">
+                            <button type="submit" class="dropdown-item">Unassign</button>
+                        </form>
+                        <!-- Close Request -->
+                        <form method="post" action="{% url 'status_change_closed' request.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="closed">
+                            <button type="submit" class="dropdown-item">Close Request</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% include "tableFunctions.html" %}
+</body>
+</html>

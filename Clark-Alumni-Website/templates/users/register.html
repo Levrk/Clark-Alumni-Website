@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+     {% include "bootstrap.html" %}
+    <style>
+        body {
+            background-image: url('/static/background1.jpeg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        /* Custom CSS to align input fields to the right */
+        .form-control {
+            text-align: right !important;
+        }
+    </style>
+</head>
+<body>
+{% include "navbar.html" %}
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h4 class="text-right">Registration</h4>
+            <hr>
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Form Fields -->
+                <div class="mb-3 text-right">
+                    <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name :</label>
+                    {{ form.first_name }}
+                    {% for error in form.first_name.errors %}
+                        <br>
+                        <small class="text-danger">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3 text-right">
+                    <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name :</label>
+                    {{ form.last_name }}
+                    {% for error in form.last_name.errors %}
+                        <br>
+                        <small class="text-danger">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3 text-right">
+                    <label for="{{ form.cell_phone.id_for_label }}" class="form-label">Cell Phone (optional) :</label>
+                    {{ form.cell_phone }}
+                    {% for error in form.cell_phone.errors %}
+                        <br>
+                        <small class="text-danger">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3 text-right">
+                    <label for="{{ form.academic_standing.id_for_label }}" class="form-label">Role :</label>
+                    {{ form.academic_standing }}
+                    {% for error in form.academic_standing.errors %}
+                        <br>
+                        <small class="text-danger">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3 text-right">
+                    <label for="{{ form.email.id_for_label }}" class "form-label">Email :</label>
+                    {{ form.email }}
+                    {% for error in form.email.errors %}
+                        <br>
+                        <small class="text-danger">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3 text-right">
+                    <label for="{{ form.password1.id_for_label }}" class="form-label">Password :</label>
+                    {{ form.password1 }}
+                    {% for error in form.password1.errors %}
+                        <br>
+                        <small class="text-danger">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3 text-right">
+                    <label for="{{ form.password2.id_for_label }}" class="form-label">Confirm Password :</label>
+                    {{ form.password2 }}
+                    {% for error in form.password2.errors %}
+                        <br>
+                        <small class="text-danger">{{ error }}</small>
+                    {% endfor %}
+                </div>
+                
+                <div style="text-align: right;">
+                    <button type="submit" class="btn btn-danger" id="registerBtnStudent">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
