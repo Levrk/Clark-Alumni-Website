@@ -118,7 +118,6 @@ class StudentRequestFormQueryset(models.QuerySet):
     def bulk_update(self, *args, **kwargs):
         raise NotImplementedError
 
-
 class StudentRequestFormManager(models.Manager.from_queryset(StudentRequestFormQueryset)):
     pass
 

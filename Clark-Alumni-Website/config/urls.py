@@ -25,6 +25,7 @@ from meta.forms import AuthForm
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.home, name="home"),
+    path("", views.home_screen, name="home"), #Seems deprecated, views.home used
     path("register/", views.register, name="register"),
     path(
         "viewrequests/",
