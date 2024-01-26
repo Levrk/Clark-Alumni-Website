@@ -32,6 +32,30 @@ Directs student to `/viewmyrequests` and collects their requests
 
 Directs alum to `/viewrequests` and collects unanswered requests
 
+#### `change_status_closed(request, request_id)`
+
+Called when alum closes assigned request, closes request and reloads assigned requests page
+
+#### `change_status_unassigned(request, request_id)`
+
+Called when alum unassigns themself from an assigned request, unassigns request and reloads assigned request page
+
+#### `register(request)`
+
+Called when alum unassigns themself from an assigned request, unassigns request and reloads assigned request page
+
+#### `return_assigned_data(request)`
+
+Directs alum to their assigned requests page
+
+#### `change_status_assigned(request, request_id)`
+
+Called when alum claims a request
+
+#### `add_comments(request, request_id)`
+
+Called when creating request comment
+
 # Django Cheat Sheet
 
 ### [render(request, template_name)](https://docs.djangoproject.com/en/5.0/topics/http/shortcuts/#render)
