@@ -1,0 +1,41 @@
+body {
+    background-image: url('/static/background1.jpeg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+/* Custom CSS to align input fields to the right */
+.form-control {
+    text-align: right !important;
+}
+
+
+.icon-link {
+    display: flex;
+    height: 150px;
+    margin-bottom: -100px; /* Adjust the spacing between links */
+    white-space: nowrap; /* Ensure the links stay in a single line */
+
+}
+
+.vh-100 {
+    padding-left: 20px; /* Adjust the value as needed */
+}
+
+/* Custom CSS for the transparent box */
+.container {
+    display: flex;
+    justify-content: auto;
+    align-items: auto;
+    height: auto;
+}
+
+.custom-box {
+    width: 300px;
+    padding: 15px; /* Increased padding for better visibility of the glass effect */
+    border: 1px solid #ccc;
+    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white background for the glass effect */
+    backdrop-filter: blur(10px); /* Add a blur effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 6px 8px rgba(0, 0, 0, 0.1); /* Box shadow for the glass effect */
+}
