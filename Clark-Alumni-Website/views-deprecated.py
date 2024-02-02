@@ -1,3 +1,8 @@
+'''
+This file appears to be deprecated.
+Another views file exists and is more feature complete.
+meta/views.py appears to be the one referenced throughout the project.
+'''
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group
