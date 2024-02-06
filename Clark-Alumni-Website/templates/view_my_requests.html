@@ -7,126 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Requests</title>
 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'view_my_requests.css' %}">
+
     <!-- Bootstrap CSS -->
     {% include "bootstrap.html" %}
 
-    <style>
-        body {
-            background-image: url('/static/background1.jpeg');
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-size: cover;
-        }
-
-        table {
-        border-collapse: collapse;
-        width: 100%;
-        font-family: Arial, sans-serif;
-    }
-
-    th, td {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-        max-width: 150px; /* Adjust the maximum width for columns as needed */
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: 14px; /* Adjust the font size as needed */
-        vertical-align: middle;
-    }
-
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-
-    th {
-        background-color: #cc0808;
-        color: white;
-    }
-
-    th[data-header="centered"] {
-        text-align: center;
-    }
-
-    td[data-cell="centered"] {
-        text-align: center;
-    }
-
-    .action-button {
-        background-color: #cc0808;
-        color: white; /* White text color */
-        border: none; /* Remove the border */
-        padding: 8px 12px; /* Add some padding to the button */
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        margin-right: 10px; /* Add spacing between buttons */
-        font-size: 14px; /* Adjust the font size as needed */
-        border-radius: 4px; /* Add rounded corners */
-        cursor: pointer;
-        transition: background-color 0.3s ease; /* Add a smooth hover effect */
-        width: 120px;
-    }
-    .action-button:hover {
-        background-color: #990000; /* Darker red color on hover */
-    }
-        .search-container input {
-    width: 100px; /* Adjust the width as needed */
-    padding: 6px; /* Adjust the padding as needed */
-    font-size: 12px; /* Adjust the font size as needed */
-    }
-
-    .clear-search {
-        font-size: 12px; /* Adjust the font size as needed */
-    }
-
-.comment-cell {
-    word-wrap: break-word;
-    white-space: pre-wrap;
-}
-
-.comments-popup {
-    position: absolute;
-    background-color: #f1f1f1;
-    padding: 0px;
-    max-height: 200px; /* Set a fixed height for the container */
-    overflow-y: auto; /* Enable vertical scrolling */
-    width: 300px; /* Set a wider width for the popup */
-}
-
-.comments-container {
-
-    margin: 0px; /* Remove default margin */
-    display: flex;
-    flex-direction: column; /* Make comments stack vertically */
-    white-space: pre-line;
-}
-
-.comment {
-    font-size: 14px; /* Adjust the font size as needed */
-    margin-bottom: 10px; /* Add margin between individual comments */
-}
-
-    .close-comments-button {
-        /* Position the close button at the top-right corner */
-        position: absolute;
-        top: 0;
-        right: 0;
-        padding: 5px;
-        cursor: pointer;
-        background-color: #990000;
-        border: none;
-        font-size: 16px;
-    }
-
-            .reset-columns-link {
-            position: relative;
-            color: #000000; /* Adjust color as needed */
-            cursor: pointer;
-            font-size: 14px; /* Adjust the font size as needed */
-        }
-    </style>
 </head>
 <body>
 {% include "navbar.html" %}

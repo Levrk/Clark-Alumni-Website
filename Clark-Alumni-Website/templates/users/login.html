@@ -12,20 +12,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
             integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous">
     </script>
-    <style>
-        body {
-            background-image: url('/static/background1.jpeg');
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-size: cover;
-        }
 
-        /* Custom CSS to align input fields to the right */
-        .form-control {
-            text-align: right !important;
-        }
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'login.css' %}">
 
-    </style>
 </head>
 <body>
 
