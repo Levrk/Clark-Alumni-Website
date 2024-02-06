@@ -1,16 +1,6 @@
 {% load static %}
-<style>
-          .padded-button {
-            padding-right: 20px; /* Adjust the value as per your requirement */
-            padding-left: 10px;  /* Add left padding if needed */
-            background-color: #4CAF50; /* Green background color */
-            color: white; /* White text color */
-            border: none; /* No border */
-            border-radius: 5px; /* Rounded corners */
-            font-size: 16px; /* Font size */
-            cursor: pointer; /* Cursor on hover */
-        }
-</style>
+<link rel="stylesheet" type="text/css" href="{% static 'navbar.css' %}">
+
 <section id="nav-bar">
     <nav class="navbar navbar-light padded-button" style="background-color: #cc0808">
     <a class="navbar-brand" href="{% url 'home' %}">
