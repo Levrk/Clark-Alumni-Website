@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<style>
+  body,
+  html {
+    height: 100%;
+    margin: 0;
+    background-image: url('/static/background1.jpeg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+
+  .grandparent {
+    min-height: 100%;
+    box-sizing: border-box;
+    width: 67%;
+    margin: auto;
+    backdrop-filter: blur(16px);
+  }
+
+  .parent {
+    margin-left: 16pt;
+    margin-right: 16pt;
+    font-size: 15pt;
+    word-wrap: break-word;
+  }
+
+  h1 {
+    font-size: 23;
+  }
+
+  .split {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .left {
+    display: inline-block;
+    text-align: left;
+  }
+
+  .right {
+    display: inline-block;
+    text-align: right;
+  }
+
+  .tags {
+    font-size: 12pt;
+  }
+
+  .comments {
+    margin-left: 32pt;
+  }
+</style>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0">
+  <title>{{request.student.first_name.title}}'s request: {{request.id}}</title>
+  {% include "bootstrap.html" %}
+</head>
+
+<body>
+  {% load static %}
+  {% if user.is_authenticated %}
+  {% include "navbar.html" %}
+  <div class="grandparent">
+    <div class="parent">
+      <br>
+      <h1>Subject Line TBI</h1>
+      <div class="split">
+        <div class="left">
+          Requested by {{request.student.first_name.title}} {{request.student.last_name.title}}.
+        </div>
+        <div class="right">
+          {%if request.assigned_alum != None%}
+          Assigned to {{request.assigned_alum.first_name.title}} {{request.assigned_alum.last_name.title}}.
+          {%else%}
+          Unassigned.
+          {%endif%}
+        </div>
+      </div>
+      <div class="split">
+        <div class="tags left">
+          Requested: {{request.submission_date}}
+        </div>
+        <div class="tags right">
+          Deadline: TBI
+        </div>
+      </div>
+      <br>
+      <div class="tags">
+        {%if request.career_planning%}
+        CAREER PLANNING &emsp;
+        {%endif%}
+        {%if request.resume%}
+        RESUME &emsp;
+        {%endif%}
+        {%if request.cover_letter%}
+        COVER LETTER &emsp;
+        {%endif%}
+        {%if request.mock_interview%}
+        MOCK INTERVIEW &emsp;
+        {%endif%}
+        {%if request.mentor_shadowing%}
+        MENTOR SHADOWING &emsp;
+        {%endif%}
+        {%if request.other%}
+        OTHER &emsp;
+        {%endif%}
+      </div>
+      <p>
+        {{request.comments}}
+      </p>
+      <br>
+      {%if request.document_link != None%}
+      <div href="{{request.document_link}}">
+        External Document
+      </div>
+      {%endif%}
+      <div class="comments">
+        {{request.my_comments}}
+      </div>
+    </div>
+  </div>
+  {%endif%}
+</body>
+
+</html>

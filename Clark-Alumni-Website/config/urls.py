@@ -23,6 +23,7 @@ from meta import views
 from meta.forms import AuthForm
 
 urlpatterns = [
+    path('request/<int:request_id>/', views.request_page, name = 'request_page'),
     path("admin/", admin.site.urls),
     path("", views.home, name="home"),
     path("", views.home_screen, name="home"), #Seems deprecated, views.home used
