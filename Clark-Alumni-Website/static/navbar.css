@@ -1,0 +1,11 @@
+.padded-button {
+    padding-right: 20px; /* Adjust the value as per your requirement */
+    padding-left: 10px;  /* Add left padding if needed */
+    background-color: #4CAF50; /* Green background color */
+    color: white; /* White text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Cursor on hover */
+}
+
