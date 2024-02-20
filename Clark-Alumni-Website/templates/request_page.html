@@ -48,8 +48,19 @@
     font-size: 12pt;
   }
 
+  .date {
+    display: inline-block;
+    text-align: right;
+    font-size: 12pt;
+  }
+
   .comments {
     margin-left: 32pt;
+  }
+
+  textarea {
+    width: 100%;
+    resize: none !important;
   }
 </style>
 <html lang="en">
@@ -83,7 +94,7 @@
       </div>
       <div class="split">
         <div class="tags left">
-          Requested: {{request.submission_date}}
+          {{request.submission_date}}
         </div>
         <div class="tags right">
           Deadline: TBI
@@ -111,7 +122,7 @@
         {%endif%}
       </div>
       <p>
-        {{request.comments}}
+        {{request.description}}
       </p>
       <br>
       {%if request.document_link != None%}
@@ -120,7 +131,20 @@
       </div>
       {%endif%}
       <div class="comments">
-        {{request.my_comments}}
+        {%for comment in comments%}
+        <div class="split">
+          <div class="left">
+            {{comment.user.first_name.title}} {{comment.user.last_name.title}}
+          </div>
+          <div class="date">
+            {{comment.date}}
+          </div>
+        </div>
+        <p>
+          {{comment.body}}
+        </p>
+        {%endfor%}
+        <textarea rows="3" placeholder="New comment..." maxlength="10000"></textarea>
       </div>
     </div>
   </div>

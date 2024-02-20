@@ -62,9 +62,9 @@
         <option value="no_urgent_need" selected>No Urgent Need</option>
       </select>
       <br>
-      <label for="comments">Comments:</label>
-      <textarea id="comments" name="comments" placeholder="Your comments here.." rows="10" cols="50"
-        maxlength="2500"></textarea>
+      <label for="description">Comments:</label>
+      <textarea id="description" name="description" placeholder="Your description here.." rows="10" cols="50"
+        maxlength="10000"></textarea>
       <br>
       <input type="reset" value="Reset">
       <input type="submit" value="Submit" id="submit-button" onclick="return validateForm();">
@@ -81,7 +81,7 @@
       var other = document.getElementById("other").checked;
       var mentorShadowing = document.getElementById("mentorShadowing").checked;
       var mockInterview = document.getElementById("mockInterview").checked;
-      var comments = document.getElementById("comments").value.trim();
+      var description = document.getElementById("description").value.trim();
 
       if (!coverLetter && !resume && !mentorShadowing && !mockInterview && !other && !careerPlanning) {
         alert("Please select at least one category for assistance.");
@@ -95,7 +95,7 @@
         return false;
       }
 
-      if ((other) && !comments) {
+      if ((other) && !description) {
         alert("Please provide detailed information in the comments section below to help us better understand your specific needs.");
         return false;
       }

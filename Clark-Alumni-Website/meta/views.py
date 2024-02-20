@@ -10,12 +10,21 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.cache import never_cache
 from meta.forms import StatusChangeForm, StudentSubmissionForm, UserRegistrationForm, selectStatusForm
-from meta.models import StudentRequestForm
+from meta.models import StudentRequestForm, Comment
 from meta.utils import ALUM_GROUP_NAME, STUDENT_GROUP_NAME, send_assignment_notification
 
+#Called when creating request comment
+@never_cache
+def add_comments(request, request_id):
+  request_obj = StudentRequestForm.objects.get(pk=request_id) # Gets the request being commented on
+  Comment.objects.create(request = request_obj, user = request.user, body = request.POST['comment']) # Creates a Comment from the posted comment
+  return HttpResponseRedirect(reverse("viewassignedrequests"))
+
+# Called when navigating to the request page
 def request_page(request, request_id):
-  request_obj = StudentRequestForm.objects.get(id = request_id)
-  return render(request, 'request_page.html', {'request': request_obj})
+  request_obj = StudentRequestForm.objects.get(id = request_id) # Gets the request
+  comments = sorted(Comment.objects.filter(request = request_obj).all(), key = lambda comment : comment.date) # Gets the request's comments in a sorted list
+  return render(request, 'request_page.html', {'request': request_obj, 'comments': comments})
 
 #Directs the user to the home page, called when logo is clicked on website
 def home(request):
@@ -141,25 +150,6 @@ def change_status_assigned(request, request_id):
     submitted_requests = StudentRequestForm.objects.filter(status="submitted")
     return render(request, "view_requests.html", {"submitted_requests": submitted_requests}) #Returns alum to unassigned
 
-#Called when creating request comment
-@never_cache
-def add_comments(request, request_id):
-    if request.method == "POST":
-        request_obj = StudentRequestForm.objects.get(pk=request_id)
-        new_comment = request.POST.get("my_comments").strip()  # Remove leading/trailing whitespaces
-        if new_comment:  # Check if the new comment contains data
-            timestamp = timezone.localtime(timezone.now(), timezone=timezone.get_current_timezone())
-            formatted_timestamp = timestamp.strftime("%m/%d/%y")
-            comment_with_timestamp = f"{formatted_timestamp}: {new_comment}"
-            existing_comments = request_obj.my_comments
-            if existing_comments:
-                updated_comments = f"{existing_comments}\n{comment_with_timestamp}" #new comments appended to end of old comments as plain string
-            else:
-                updated_comments = comment_with_timestamp
-            request_obj.my_comments = updated_comments
-            request_obj.save()
-    return HttpResponseRedirect(reverse("viewassignedrequests"))
-
 #Doesn't seem to be called
 #Would return the contained HttpResponse object
 def index(request):
@@ -180,6 +170,7 @@ class StudentRequestFormSubmitView(LoginRequiredMixin, View):
         return render(request, "base.html", context)
 
     def post(self, request):
+        print(request)
         form = StudentSubmissionForm(request.POST)
         form.instance.student = request.user
         form.instance.status = "submitted"
