@@ -1,43 +1,119 @@
 {% load static %}
 <style>
-          .padded-button {
-            padding-right: 20px; /* Adjust the value as per your requirement */
-            padding-left: 10px;  /* Add left padding if needed */
-            background-color: #4CAF50; /* Green background color */
-            color: white; /* White text color */
-            border: none; /* No border */
-            border-radius: 5px; /* Rounded corners */
-            font-size: 16px; /* Font size */
-            cursor: pointer; /* Cursor on hover */
-        }
+    /* Styling for the navigation buttons */
+    .padded-button {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Styling for individual navigation links */
+    .padded-button a {
+        position: relative;
+        font-size: 17px;
+        color: #fff;
+        font-weight: 380;
+        text-decoration: none;
+        margin-left: 10px;
+    }
+
+    /* Underline effect on hover for navigation links */
+    .padded-button a::before {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #fff;
+    }
+
+    .padded-button a:hover::before {
+        width: 100%;
+    }
+
+    /* Styling for the brand/logo in the navbar */
+    .navbar-brand {
+        margin-right: auto;
+    }
+
+    /* Styling for the user profile image */
+    .profile {
+        width: 55px;
+        border-radius: 50%;
+        cursor: pointer;
+        margin-left: 15px;
+    }
+
+    /* Styling for the profile button dropdown */
+    .profile-button {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        position: absolute;
+        top: 75%;
+        right: 10px;
+        z-index: 1;
+        background-color: #a8a5a5;
+        padding: 5px;
+        box-shadow: 5px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .profile-button a {
+        margin-bottom: 20px;
+        color: #fff;
+    }
 </style>
-<section id="nav-bar">
-    <nav class="navbar navbar-light padded-button" style="background-color: #cc0808">
-    <a class="navbar-brand" href="{% url 'home' %}">
-        <img src="{% static 'logonobg2.png' %}">
-    </a>
 
-    <button class="navbar-toggler bg-white" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+<body>
+    <header id="nav-bar">
+        <nav class="navbar navbar-light" style="background-color: #cc0808">
+            <!-- Logo/Brand -->
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'logonobg2.png' %}">
+            </a>
 
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto" style="float:right;margin:20px;">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'home' %}" style="color: white;">Home</a>
-            </li>
             {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}" style="color: white;">Logout</a>
-                </li>
+                {% if user.is_student %}
+                    <!-- Student navigation buttons -->
+                    <div class="padded-button" style="float:right; margin:20px;">
+                        <a class="nav-link padded-button" href="{% url 'home' %}">Home</a>
+                        <a class="nav-link padded-button" href="{% url 'viewmyrequests' %}">View Requests</a>
+                        <!-- Profile button and dropdown -->
+                        <div class="profile-button" id="profile-button-slider">
+                            <a class="nav-link padded-button" href="{% url 'logout' %}">Logout</a>
+                        </div>
+                        <img src="/static/profile_icon.png" class="profile" onclick="toggleButton()">
+                    </div>
+                {% endif %}
+                {% if user.is_alum %}
+                    <!-- Alumni navigation buttons -->
+                    <div class="padded-button" style="float:right; margin:20px;">
+                        <a class="nav-link padded-button" href="{% url 'home' %}">Home</a>
+                        <a class="nav-link padded-button" href="{% url 'viewassignedrequests' %}">Assigned Requests</a>
+                        <a class="nav-link padded-button" href="{% url 'viewrequests' %}">Unassigned Requests</a>
+                        <!-- Profile button and dropdown -->
+                        <div class="profile-button" id="profile-button-slider">
+                            <a class="nav-link padded-button" href="{% url 'logout' %}">Logout</a>
+                        </div>
+                        <img src="/static/profile_icon.png" class="profile" onclick="toggleButton()">
+                    </div>
+                {% endif %}
             {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}" style="color: white;">Login</a>
-                </li>
+                <!-- Non-authenticated user navigation buttons -->
+                <div class="padded-button" style="float:right; margin:20px;">
+                    <a class="nav-link padded-button" href="{% url 'login' %}">Login</a>
+                    <a class="nav-link padded-button" href="{% url 'register' %}">Register</a>
+                </div>
             {% endif %}
-        </ul>
-    </div>
-</nav>
 
-</section>
+            <!-- JavaScript for toggling profile button dropdown -->
+            <script>
+                function toggleButton() {
+                    var profileButton = document.getElementById("profile-button-slider");
+                    profileButton.style.display = (profileButton.style.display === 'none') ? 'flex' : 'none';
+                }
+            </script>
+        </nav>
+    </header>
+</body>
