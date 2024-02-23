@@ -1,0 +1,105 @@
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Requests</title>
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'view_my_requests.css' %}">
+
+    <!-- Bootstrap CSS -->
+    {% include "bootstrap.html" %}
+
+</head>
+<body>
+{% include "navbar.html" %}
+<br>
+<div class="container mt-3">
+    <h3 class="text-center">
+        My Requests : <span id="totalCount"></span>
+    </h3>
+</div>
+<table class="table table-bordered table-striped mt-3" id="myTable">
+    <thead class="bg-danger">
+    <tr>
+        <th data-header="centered">Submitted<br>Date</th>
+        <th data-header="centered">Status</th>
+        <th data-header="centered">Urgency</th>
+        <th data-header="centered">Help Requested</th>
+        <th data-header="centered" data-cell="centered">My<br>Comments</th>
+        <th data-header="centered" data-cell="centered">Job<br>Interest</th>
+        <th data-header="centered" data-cell="centered">Industry<br>Interest</th>
+        <th data-header="centered">Document<br>Link</th>
+        <th data-header="centered">Alum's<br>Comments</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>
+            <div class="search-container">
+                <input type="text" id="searchDate" oninput="handleSearch('searchDate', 0)"
+                       onkeypress="searchOnEnter(event, 'searchDate')" placeholder="contains...">
+                <span class="clear-search" onclick="clearSearch('searchDate')">&#10006;</span>
+            </div>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    {% for request in all_requests %}
+        <!-- View Comments Modal -->
+        <div class="modal fade" id="viewComments" tabindex="-1" aria-labelledby="viewCommentsLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title" id="viewCommentsLabel">View Comments</h1>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">x</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="comments-container">
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tr>
+            <td data-cell="centered">{{ request.submission_date | date:"m/d/Y" }}</td>
+            <td data-cell="centered">{{ request.status|lower|capfirst }}</td>
+            <td data-cell="centered">{{ request.support_urgency|lower|replace_underscore_with_space|capfirst }}</td>
+            <td data-cell="centered">{% for field in request.help_requested_list_display %}
+                {{ field }}<br>
+             {% endfor %}</td>
+            <td data-cell="centered"><span
+                    title="{{ request.comments|default:'-' }}">{{ request.comments|default:'-' }}</span></td>
+            <td data-cell="centered">{{ request.job_interest|default:"-" }}</td>
+            <td data-cell="centered">{{ request.industry_interest|default:"-" }}</td>
+            <td data-cell="centered">
+                {% if request.document_link %}
+                    <a href="{{ request.document_link }}">Document Link</a>
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td class="comment-cell" data-cell="centered">
+                <button class="view-comments-button action-button" data-toggle="modal" data-target="#viewComments" data-comments="{{request.my_comments}}">View Comments</button>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% include "tableFunctions.html" %}
+</body>
+</html>
