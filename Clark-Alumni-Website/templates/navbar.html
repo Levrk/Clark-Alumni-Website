@@ -1,23 +1,78 @@
 {% load static %}
+<style>
+    /* Styling for the navigation buttons */
+    .padded-button {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-<link rel="stylesheet" type="text/css" href="{% static 'navbar.css' %}">
+    /* Styling for individual navigation links */
+    .padded-button a {
+        position: relative;
+        font-size: 17px;
+        color: #fff;
+        font-weight: 380;
+        text-decoration: none;
+        margin-left: 10px;
+    }
 
-<section id="nav-bar">
-    <nav class="navbar navbar-light padded-button" style="background-color: #cc0808">
-    <a class="navbar-brand" href="{% url 'home' %}">
-        <img src="{% static 'logonobg2.png' %}">
-    </a>
+    /* Underline effect on hover for navigation links */
+    .padded-button a::before {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #fff;
+    }
 
-    <button class="navbar-toggler bg-white" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+    .padded-button a:hover::before {
+        width: 100%;
+    }
 
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto" style="float:right;margin:20px;">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'home' %}" style="color: white;">Home</a>
-            </li>
+    /* Styling for the brand/logo in the navbar */
+    .navbar-brand {
+        margin-right: auto;
+    }
+
+    /* Styling for the user profile image */
+    .profile {
+        width: 55px;
+        border-radius: 50%;
+        cursor: pointer;
+        margin-left: 15px;
+    }
+
+    /* Styling for the profile button dropdown */
+    .profile-button {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        position: absolute;
+        top: 75%;
+        right: 10px;
+        z-index: 1;
+        background-color: #a8a5a5;
+        padding: 5px;
+        box-shadow: 5px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .profile-button a {
+        margin-bottom: 20px;
+        color: #fff;
+    }
+</style>
+
+<body>
+    <header id="nav-bar">
+        <nav class="navbar navbar-light" style="background-color: #cc0808">
+            <!-- Logo/Brand -->
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'logonobg2.png' %}">
+            </a>
+
             {% if user.is_authenticated %}
                 {% if user.is_student %}
                     <!-- Student navigation buttons -->
