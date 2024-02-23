@@ -13,6 +13,10 @@ from meta.forms import StatusChangeForm, StudentSubmissionForm, UserRegistration
 from meta.models import StudentRequestForm
 from meta.utils import ALUM_GROUP_NAME, STUDENT_GROUP_NAME, send_assignment_notification
 
+def request_page(request, request_id):
+  request_obj = StudentRequestForm.objects.get(id = request_id)
+  return render(request, 'request_page.html', {'request': request_obj})
+
 #Directs the user to the home page, called when logo is clicked on website
 def home(request):
     return render(request, "users/home.html")
@@ -149,7 +153,7 @@ def add_comments(request, request_id):
             comment_with_timestamp = f"{formatted_timestamp}: {new_comment}"
             existing_comments = request_obj.my_comments
             if existing_comments:
-                updated_comments = f"{existing_comments}\n{comment_with_timestamp}"
+                updated_comments = f"{existing_comments}\n{comment_with_timestamp}" #new comments appended to end of old comments as plain string
             else:
                 updated_comments = comment_with_timestamp
             request_obj.my_comments = updated_comments

@@ -6,85 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student's Requests</title>
 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'view_requests.css' %}">
+
     {% include "bootstrap.html" %}
 
-    <style>
-        body {
-            background-image: url('/static/background1.jpeg');
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-size: cover;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            font-family: Arial, sans-serif;
-        }
-
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-            max-width: 150px; /* Adjust the maximum width for columns as needed */
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            font-size: 14px; /* Adjust the font size as needed */
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        th {
-            background-color: #cc0808;
-            color: white;
-        }
-
-        th[data-header="centered"] {
-            text-align: center;
-        }
-
-        td[data-cell="centered"] {
-            text-align: center;
-        }
-
-        .action-button {
-            background-color: #cc0808;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .action-button:hover {
-            background-color: #990000;
-        }
-
-        .search-container input {
-            width: 100px;
-            padding: 6px;
-            font-size: 12px;
-        }
-
-        .clear-search {
-            font-size: 12px;
-        }
-
-        .text-border {
-            border: 1px solid black;
-            display: inline-block;
-            padding: 5px; /* Adjust padding as needed */
-            color: red; /* Text color */
-        }
-    </style>
 </head>
 <body>
 

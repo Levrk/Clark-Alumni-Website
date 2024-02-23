@@ -1,0 +1,11 @@
+body {
+    background-image: url('/static/background1.jpeg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+/* Custom CSS to align input fields to the right */
+.form-control {
+    text-align: right !important;
+}
