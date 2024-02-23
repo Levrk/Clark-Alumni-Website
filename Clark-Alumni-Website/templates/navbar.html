@@ -1,4 +1,5 @@
 {% load static %}
+
 <link rel="stylesheet" type="text/css" href="{% static 'navbar.css' %}">
 
 <section id="nav-bar">
@@ -18,16 +19,46 @@
                 <a class="nav-link" href="{% url 'home' %}" style="color: white;">Home</a>
             </li>
             {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}" style="color: white;">Logout</a>
-                </li>
+                {% if user.is_student %}
+                    <!-- Student navigation buttons -->
+                    <div class="padded-button" style="float:right; margin:20px;">
+                        <a class="nav-link padded-button" href="{% url 'home' %}">Home</a>
+                        <a class="nav-link padded-button" href="{% url 'viewmyrequests' %}">View Requests</a>
+                        <!-- Profile button and dropdown -->
+                        <div class="profile-button" id="profile-button-slider">
+                            <a class="nav-link padded-button" href="{% url 'logout' %}">Logout</a>
+                        </div>
+                        <img src="/static/profile_icon.png" class="profile" onclick="toggleButton()">
+                    </div>
+                {% endif %}
+                {% if user.is_alum %}
+                    <!-- Alumni navigation buttons -->
+                    <div class="padded-button" style="float:right; margin:20px;">
+                        <a class="nav-link padded-button" href="{% url 'home' %}">Home</a>
+                        <a class="nav-link padded-button" href="{% url 'viewassignedrequests' %}">Assigned Requests</a>
+                        <a class="nav-link padded-button" href="{% url 'viewrequests' %}">Unassigned Requests</a>
+                        <!-- Profile button and dropdown -->
+                        <div class="profile-button" id="profile-button-slider">
+                            <a class="nav-link padded-button" href="{% url 'logout' %}">Logout</a>
+                        </div>
+                        <img src="/static/profile_icon.png" class="profile" onclick="toggleButton()">
+                    </div>
+                {% endif %}
             {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}" style="color: white;">Login</a>
-                </li>
+                <!-- Non-authenticated user navigation buttons -->
+                <div class="padded-button" style="float:right; margin:20px;">
+                    <a class="nav-link padded-button" href="{% url 'login' %}">Login</a>
+                    <a class="nav-link padded-button" href="{% url 'register' %}">Register</a>
+                </div>
             {% endif %}
-        </ul>
-    </div>
-</nav>
 
-</section>
+            <!-- JavaScript for toggling profile button dropdown -->
+            <script>
+                function toggleButton() {
+                    var profileButton = document.getElementById("profile-button-slider");
+                    profileButton.style.display = (profileButton.style.display === 'none') ? 'flex' : 'none';
+                }
+            </script>
+        </nav>
+    </header>
+</body>
