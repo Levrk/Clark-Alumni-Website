@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <style>
-  body,
-  html {
+  body {
     height: 100%;
     margin: 0;
-    background-image: url('/static/background1.jpeg');
+    background-image: url('/static/background1.jpeg') !important;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
   }
 
   .grandparent {
-    min-height: 100%;
+    height: 100%;
     box-sizing: border-box;
     width: 67%;
     margin: auto;
     backdrop-filter: blur(16px);
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    padding-bottom: 64px;
   }
 
   .parent {
@@ -61,6 +64,18 @@
   textarea {
     width: 100%;
     resize: none !important;
+  }
+
+  .button {
+    background-color: crimson;
+    color: white;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .button:hover {
+    background-color: darkred;
   }
 </style>
 <html lang="en">
@@ -144,7 +159,12 @@
           {{comment.body}}
         </p>
         {%endfor%}
-        <textarea rows="3" placeholder="New comment..." maxlength="10000"></textarea>
+        <form method="post">
+          {% csrf_token %}
+          <textarea name="comment" rows=4 placeholder="New comment..."></textarea>
+          <button class="button" type="reset">Clear</button>
+          <button class="button" type="submit">Submit</button>
+        </form>
       </div>
     </div>
   </div>

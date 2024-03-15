@@ -12,6 +12,7 @@ from django.views.decorators.cache import never_cache
 from meta.forms import StatusChangeForm, StudentSubmissionForm, UserRegistrationForm, selectStatusForm
 from meta.models import StudentRequestForm, Comment
 from meta.utils import ALUM_GROUP_NAME, STUDENT_GROUP_NAME, send_assignment_notification
+import re
 
 #Called when creating request comment
 @never_cache
@@ -23,6 +24,8 @@ def add_comments(request, request_id):
 # Called when navigating to the request page
 def request_page(request, request_id):
   request_obj = StudentRequestForm.objects.get(id = request_id) # Gets the request
+  if request.method == 'POST' and not re.match(r" *", request.POST['comment']):
+    Comment.objects.create(request = request_obj, user = request.user, body = request.POST['comment'])
   comments = sorted(Comment.objects.filter(request = request_obj).all(), key = lambda comment : comment.date) # Gets the request's comments in a sorted list
   return render(request, 'request_page.html', {'request': request_obj, 'comments': comments})
 
