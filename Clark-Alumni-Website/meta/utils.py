@@ -31,10 +31,10 @@ def check_form_fields(**kwargs) -> None:
             'One of the "help requested" categories is required when submitting a request.'
         )
 
-    comments = kwargs.get("comments")
-    if status != "draft" and other and not comments:
+    description = kwargs.get("description")
+    if status != "draft" and other and not description:
         raise Exception(
-            '"Other" was selected for Help Requested, but no comments were entered. Please use the comments field to specify the help requested.'
+            '"Other" was selected for Help Requested, but no description was given. Please use the description field to specify the help requested.'
         )
 
     document_link = kwargs.get("document_link")
