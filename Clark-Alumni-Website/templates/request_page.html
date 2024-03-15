@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <style>
-  body,
-  html {
+  body {
     height: 100%;
     margin: 0;
-    background-image: url('/static/background1.jpeg');
+    background-image: url('/static/background1.jpeg') !important;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
   }
 
   .grandparent {
-    min-height: 100%;
+    height: 100%;
     box-sizing: border-box;
     width: 67%;
     margin: auto;
     backdrop-filter: blur(16px);
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    padding-bottom: 64px;
   }
 
   .parent {
@@ -48,8 +51,31 @@
     font-size: 12pt;
   }
 
+  .date {
+    display: inline-block;
+    text-align: right;
+    font-size: 12pt;
+  }
+
   .comments {
     margin-left: 32pt;
+  }
+
+  textarea {
+    width: 100%;
+    resize: none !important;
+  }
+
+  .button {
+    background-color: crimson;
+    color: white;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .button:hover {
+    background-color: darkred;
   }
 </style>
 <html lang="en">
@@ -83,7 +109,7 @@
       </div>
       <div class="split">
         <div class="tags left">
-          Requested: {{request.submission_date}}
+          {{request.submission_date}}
         </div>
         <div class="tags right">
           Deadline: TBI
@@ -111,7 +137,7 @@
         {%endif%}
       </div>
       <p>
-        {{request.comments}}
+        {{request.description}}
       </p>
       <br>
       {%if request.document_link != None%}
@@ -120,7 +146,25 @@
       </div>
       {%endif%}
       <div class="comments">
-        {{request.my_comments}}
+        {%for comment in comments%}
+        <div class="split">
+          <div class="left">
+            {{comment.user.first_name.title}} {{comment.user.last_name.title}}
+          </div>
+          <div class="date">
+            {{comment.date}}
+          </div>
+        </div>
+        <p>
+          {{comment.body}}
+        </p>
+        {%endfor%}
+        <form method="post">
+          {% csrf_token %}
+          <textarea name="comment" rows=4 placeholder="New comment..."></textarea>
+          <button class="button" type="reset">Clear</button>
+          <button class="button" type="submit">Submit</button>
+        </form>
       </div>
     </div>
   </div>

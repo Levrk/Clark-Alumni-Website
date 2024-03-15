@@ -3,7 +3,7 @@ import re
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
-from meta.models import StudentRequestForm, User
+from meta.models import StudentRequestForm, User, Comment
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -42,17 +42,15 @@ class StudentSubmissionForm(forms.ModelForm):
         model = StudentRequestForm
         exclude = ["status", "student", "assigned_alum"]
 
-
 class StatusChangeForm(forms.ModelForm):
     class Meta:
         model = StudentRequestForm
         fields = ["status"]
 
-
-class AddCommentForm(forms.ModelForm):
-    class Meta:
-        model = StudentRequestForm
-        fields = ["my_comments"]
+class CommentForm(forms.ModelForm):
+  class Meta:
+    model = Comment
+    fields = ['request', 'user', 'body']
 
 
 class AuthForm(AuthenticationForm):

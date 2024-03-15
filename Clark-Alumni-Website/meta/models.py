@@ -151,14 +151,13 @@ class StudentRequestForm(models.Model):
     mentor_shadowing = models.BooleanField(default=False)
     mock_interview = models.BooleanField(default=False)
     other = models.BooleanField(default=False)
-    comments = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     document_link = models.CharField(blank=True, null=True)
     job_interest = models.CharField(max_length=50, blank=True, null=True)
     industry_interest = models.CharField(max_length=50, blank=True, null=True)
     support_urgency = models.CharField(
         max_length=50, choices=SUPPORT_URGENCY_OPTIONS, default="within_1_week"
     )
-    my_comments = models.TextField(blank=True, null=True)
     assigned_alum = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
@@ -175,7 +174,7 @@ class StudentRequestForm(models.Model):
             "assigned_alum": self.assigned_alum,
             "status": self.status,
             "document_link": self.document_link,
-            "comments": self.comments,
+            "description": self.description,
         }
         fields.update(self.help_requested)
         check_form_fields(**fields)
@@ -195,3 +194,9 @@ class StudentRequestForm(models.Model):
             if getattr(self, field, None):
                 help_requested.append(field_str_display(field))
         return help_requested
+
+class Comment(models.Model):
+  request = models.ForeignKey(StudentRequestForm, models.CASCADE)
+  user = models.ForeignKey(User, models.CASCADE)
+  date = models.DateTimeField(auto_now_add=True)
+  body = models.TextField()
