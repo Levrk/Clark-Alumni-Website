@@ -24,7 +24,7 @@ def add_comments(request, request_id):
 # Called when navigating to the request page
 def request_page(request, request_id):
   request_obj = StudentRequestForm.objects.get(id = request_id) # Gets the request
-  if request.method == 'POST' and not re.match(r" *", request.POST['comment']):
+  if request.method == 'POST':
     Comment.objects.create(request = request_obj, user = request.user, body = request.POST['comment'])
   comments = sorted(Comment.objects.filter(request = request_obj).all(), key = lambda comment : comment.date) # Gets the request's comments in a sorted list
   return render(request, 'request_page.html', {'request': request_obj, 'comments': comments})
