@@ -2,256 +2,296 @@
 {% load custom_filters %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Requests</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Requests</title>
 
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'view_my_requests.css' %}">
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'view_my_requests.css' %}">
 
-    <style>
-        
-        /* Add some padding to the table cells */
-        table {
-        border-spacing: 0 15px; /* Add vertical spacing between rows */
-        background: transparent; /* Make the table background transparent */
-        }
+  <style>
+    /* Add some padding to the table cells */
+    table {
+      border-spacing: 0 15px;
+      /* Add vertical spacing between rows */
+      background: transparent;
+      /* Make the table background transparent */
+    }
 
-        table th, table td {
-            background: #fff; /* Add a background to the cells */
-            border: none; /* Remove the cell borders */
-        }
-    
-        /* Add a background color to the table header */
-        table thead {
-            background-color: #f2f2f2;
-            padding-bottom: 20px; /* Adjust this value as needed */
-        }
+    table th,
+    table td {
+      background: #fff;
+      /* Add a background to the cells */
+      border: none;
+      /* Remove the cell borders */
+    }
 
-        table thead th {
-            padding-bottom: 20px; /* Adjust this value as needed */
-        }
-        
-    
-        /* Add hover effects to the table rows */
-        table tbody tr:hover {
-            background-color: #ddd;
-        }
+    /* Add a background color to the table header */
+    table thead {
+      background-color: #f2f2f2;
+      padding-bottom: 20px;
+      /* Adjust this value as needed */
+    }
 
-        /* Add some margin to the bottom of each row */
-        table tbody tr {
-            margin-bottom: 10px;
-        }
-
-        /* Add border radius to each row */
-        table tbody tr {
-            border-radius: 10px;
-        }
-    
-        /* Add borders and border radius to the table */
-        table {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            overflow: hidden;  /* Make sure the border radius is applied to the table */
-        }
-    
-        /* Make the submission date a bit bigger and in a box */
-        .submission-date {
-            font-size: 30px;
-            padding: 10px;  /* Increase padding to make the box bigger */
-            display: inline-block;
-            color: black;
-            border-radius: 5px;
-            font-weight: bold;  /* Make the date text bold */
-            margin-right: 10px;  /* Add right margin to create space between each box */
-        }
-        /* Change the color of the status based on its value */
-        .status {
-            padding: 5px;
-            color: white;
-            border-radius: 5px;
-            }
-
-        .status-submitted {
-            background-color: #cc0808;
-        }
-
-        .status-assigned {
-            background-color: #17a41a;
-        }
-
-        .status-taken {
-            background-color: #333;  /* Change this to the color you want for the "taken" status */
-        }
-
-        .collapse {
-            background-color: white; /* Make the drop-down menu white */
-            transition: height 0.5s ease-out, opacity 0.5s ease-out;
-            opacity: 0;
-        }
-        .collapsing {
-            transition: height 0.35s ease-out, opacity 0.35s ease-out;
-            opacity: 0.5;
-        }
-
-        .collapse.show {
-            transition: height 0.35s ease-out, opacity 0.35s ease-out;
-            opacity: 1;
-        }
-
-        .my-accordion {
-            padding: 20px !important;  /* Increase padding to make the box bigger */
-            margin-bottom: 10px !important;  /* Add bottom margin to create space between each box */
-        }
-
-        .my-card {
-                margin-bottom: 20px;  /* Add space between each box */
-                padding: 20px;  /* Increase the size of the box */
-            }
-        .comment-cell {
-                text-align: left;
-                margin-bottom: 20px;  /* Add space between each box */
-            }
-            
-        .clickable td {
-            background-color: rgb(208, 208, 208) !important; /* Change this to the shade of red you want */
-            padding: 20px;  /* Increase padding to make the box bigger */
-            font-size: 20px; /* Increase font size if needed */
-            padding: 10px;  /* Increase padding to make the box bigger */
-            color: black;
-            border-radius: 10px;
-            font-weight: bold;  /* Make the date text bold */
-            margin-right: 10px;  /* Add right margin to create space between each box */
-        }
-
-        .date {
-            float: left;
-            padding-left: 20px; /* Adjust this to add more or less space */
-        }
-        
-        .help-requested {
-            float: right;
-            background-color: rgb(255, 0, 234);
-            color: white;
-            padding: 5px;
-            font-size: 12px; /* Adjust this to change the text size */
-            height: auto; /* Adjust this to change the box height */
-            border-radius: 5px; /* Make the box circular */
-        }
+    table thead th {
+      padding-bottom: 20px;
+      /* Adjust this value as needed */
+    }
 
 
-    </style>
+    /* Add hover effects to the table rows */
+    table tbody tr:hover {
+      background-color: #ddd;
+    }
 
-    <!-- Bootstrap CSS -->
-    {% include "bootstrap.html" %}
-    
+    /* Add some margin to the bottom of each row */
+    table tbody tr {
+      margin-bottom: 10px;
+    }
+
+    /* Add border radius to each row */
+    table tbody tr {
+      border-radius: 10px;
+    }
+
+    /* Add borders and border radius to the table */
+    table {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+      /* Make sure the border radius is applied to the table */
+    }
+
+    /* Make the submission date a bit bigger and in a box */
+    .submission-date {
+      font-size: 30px;
+      padding: 10px;
+      /* Increase padding to make the box bigger */
+      display: inline-block;
+      color: black;
+      border-radius: 5px;
+      font-weight: bold;
+      /* Make the date text bold */
+      margin-right: 10px;
+      /* Add right margin to create space between each box */
+    }
+
+    /* Change the color of the status based on its value */
+    .status {
+      padding: 5px;
+      color: white;
+      border-radius: 5px;
+    }
+
+    .status-submitted {
+      background-color: #cc0808;
+    }
+
+    .status-assigned {
+      background-color: #17a41a;
+    }
+
+    .status-taken {
+      background-color: #333;
+      /* Change this to the color you want for the "taken" status */
+    }
+
+    .collapse {
+      background-color: white;
+      /* Make the drop-down menu white */
+      transition: height 0.5s ease-out, opacity 0.5s ease-out;
+      opacity: 0;
+    }
+
+    .collapsing {
+      transition: height 0.35s ease-out, opacity 0.35s ease-out;
+      opacity: 0.5;
+    }
+
+    .collapse.show {
+      transition: height 0.35s ease-out, opacity 0.35s ease-out;
+      opacity: 1;
+    }
+
+    .my-accordion {
+      padding: 20px !important;
+      /* Increase padding to make the box bigger */
+      margin-bottom: 10px !important;
+      /* Add bottom margin to create space between each box */
+    }
+
+    .my-card {
+      margin-bottom: 20px;
+      /* Add space between each box */
+      padding: 20px;
+      /* Increase the size of the box */
+    }
+
+    .comment-cell {
+      text-align: left;
+      margin-bottom: 20px;
+      /* Add space between each box */
+    }
+
+    .clickable td {
+      background-color: rgb(208, 208, 208) !important;
+      /* Change this to the shade of red you want */
+      padding: 20px;
+      /* Increase padding to make the box bigger */
+      font-size: 20px;
+      /* Increase font size if needed */
+      padding: 10px;
+      /* Increase padding to make the box bigger */
+      color: black;
+      border-radius: 10px;
+      font-weight: bold;
+      /* Make the date text bold */
+      margin-right: 10px;
+      /* Add right margin to create space between each box */
+    }
+
+    .date {
+      float: left;
+      padding-left: 20px;
+      /* Adjust this to add more or less space */
+    }
+
+    .help-requested {
+      float: right;
+      background-color: rgb(255, 0, 234);
+      color: white;
+      padding: 5px;
+      font-size: 12px;
+      /* Adjust this to change the text size */
+      height: auto;
+      /* Adjust this to change the box height */
+      border-radius: 5px;
+      /* Make the box circular */
+    }
+  </style>
+
+  <!-- Bootstrap CSS -->
+  {% include "bootstrap.html" %}
+
 
 </head>
 
 
 <body>
-    {% include "navbar.html" %}
-    <br>
-    <div class="container mt-3">
-        <h1 class="text-center">My Requests</h1>
-    </div>
-    
-    <div class="container mt-3">
-        <table class="table table-striped tabindex" id="myTable">
-            <thead class="bg-danger">
-                <tr>
-                    <th colspan="9" class="text-center">Click Request For More Information</th>
-                </tr>
-                <tr style="height: 10px;"></tr> <!-- This is the new spacer row -->
-            </thead>
-            <tbody>
-                {% for request in all_requests %}
-                <tr class="clickable" data-toggle="collapse" data-target="#details{{ forloop.counter }}" aria-expanded="false" aria-controls="collapseExample">
-                    <td data-cell="centered">
-                        <div class="date">{{ request.submission_date | date:"m/d/Y" }}</div>
-                        <div class="help-requested">
-                            {% for field in request.help_requested_list_display %}
-                                {{ field }}
-                            {% endfor %}
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="9" class="p-0">
-                        <div id="details{{ forloop.counter }}" class="collapse my-accordion">
-                            <div class="p-3">
-                                <p class="status status-{{ request.status|lower }}"><strong>Status:</strong> {{ request.status|lower|capfirst }}</p>
-                                <div class="d-flex flex-column align-items-start">
-                                    <button class="btn btn-primary view-comments-button mt-2 mb-3" data-toggle="modal" data-target="#viewComments{{ forloop.counter }}" data-comments="{{ request.my_comments }}" data-request-id="{{ forloop.counter }}">View Comments</button>
-                                </div>
-                                <p><strong>Urgency:</strong> {{ request.support_urgency|lower|replace_underscore_with_space|capfirst }}</p>
-                                <p><strong>Job Interest:</strong> {{ request.job_interest|default:"-" }}</p>
-                                <p><strong>Industry Interest:</strong> {{ request.industry_interest|default:"-" }}</p>
-                                <p><strong>Document Link:</strong>
-                                    {% if request.document_link %}
-                                    <a href="{{ request.document_link }}">Document Link</a>
-                                    {% else %}
-                                    -
-                                    {% endif %}
-                                </p>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="spacer" style="height: 10px;"></tr> <!-- This is the new spacer row -->
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+  {% include "navbar.html" %}
+  <br>
+  <div class="container mt-3">
+    <h1 class="text-center">My Requests</h1>
+  </div>
 
-<!-- Your existing modal code for View Comments -->
-{% for request in all_requests %}
-<div class="modal fade" id="viewComments{{ forloop.counter }}" tabindex="-1" aria-labelledby="viewCommentsLabel{{ forloop.counter }}" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title" id="viewCommentsLabel{{ forloop.counter }}">View Comments</h1>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">x</button>
+  <div class="container mt-3">
+    <table class="table table-striped tabindex" id="myTable">
+      <thead class="bg-danger">
+        <tr>
+          <th colspan="9" class="text-center">Click Request For More Information</th>
+        </tr>
+        <tr style="height: 10px;"></tr> <!-- This is the new spacer row -->
+      </thead>
+      <tbody>
+        {% for request in all_requests %}
+        <tr class="clickable" data-toggle="collapse" data-target="#details{{ forloop.counter }}" aria-expanded="false"
+          aria-controls="collapseExample">
+          <td data-cell="centered">
+            <div class="date">{{ request.submission_date | date:"m/d/Y" }}</div>
+            <div class="help-requested">
+              {% for field in request.help_requested_list_display %}
+              {{ field }}
+              {% endfor %}
             </div>
-            <div class="modal-body">
-                <div class="comments-container">
-                    <p>{{ request.my_comments }}</p>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="9" class="p-0">
+            <div id="details{{ forloop.counter }}" class="collapse my-accordion">
+              <div class="p-3">
+                <p class="status status-{{ request.status|lower }}"><strong>Status: {{request.status.title}}</strong>
+                </p>
+                <div class="d-flex flex-column align-items-start">
+                  <button class="btn btn-primary view-comments-button mt-2 mb-3"
+                    onclick="location.href='{% url 'request_page' request.id %}'">View Request</button>
                 </div>
+                <p><strong>Urgency:</strong> {{ request.support_urgency|lower|replace_underscore_with_space|capfirst }}
+                </p>
+                <p><strong>Job Interest:</strong> {{ request.job_interest|default:"-" }}</p>
+                <p><strong>Industry Interest:</strong> {{ request.industry_interest|default:"-" }}</p>
+                <p><strong>Document Link:</strong>
+                  {% if request.document_link %}
+                  <a href="{{ request.document_link }}">Document Link</a>
+                  {% else %}
+                  -
+                  {% endif %}
+                </p>
+              </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
+          </td>
+        </tr>
+        <tr class="spacer" style="height: 10px;"></tr> <!-- This is the new spacer row -->
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Your existing modal code for View Comments -->
+  {% for request in all_requests %}
+  <div class="modal fade" id="viewComments{{ forloop.counter }}" tabindex="-1"
+    aria-labelledby="viewCommentsLabel{{ forloop.counter }}" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title" id="viewCommentsLabel{{ forloop.counter }}">View Comments</h1>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">x</button>
         </div>
+        <div class="modal-body">
+          <div class="comments-container">
+            <p>{{ request.my_comments }}</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
     </div>
-</div>
-{% endfor %}
+  </div>
+  {% endfor %}
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-GLhlTQ8i6c9tNY7dhBQ9QI8fEL3puh3+5tLZ5gvmMqE+I1E2HQpDWrQlgO9x87T" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-GLhlTQ8i6c9tNY7dhBQ9QI8fEL3puh3+5tLZ5gvmMqE+I1E2HQpDWrQlgO9x87T" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
 
-<script>
+  <script>
     $(document).ready(function () {
-        // Use JavaScript to prevent the collapse of the whole table
-        $(".clickable").click(function (event) {
-            event.stopPropagation();
-        });
+      // Use JavaScript to prevent the collapse of the whole table
+      $(".clickable").click(function (event) {
+        event.stopPropagation();
+      });
 
-        // Handle the show.bs.modal event
-        $('.modal').on('show.bs.modal', function (event) {
-            // Get the button that triggered the modal
-            var button = $(event.relatedTarget);
+      // Handle the show.bs.modal event
+      $('.modal').on('show.bs.modal', function (event) {
+        // Get the button that triggered the modal
+        var button = $(event.relatedTarget);
 
-            // Extract the comments from the button's data-comments attribute
-            var comments = button.data('comments');
+        // Extract the comments from the button's data-comments attribute
+        var comments = button.data('comments');
 
-            // Display the comments in the modal
-            $(this).find('.comments-container p').text(comments);
-        });
+        // Display the comments in the modal
+        $(this).find('.comments-container p').text(comments);
+      });
     });
-</script>
+  </script>
 
-{% include "tableFunctions.html" %}
+  {% include "tableFunctions.html" %}
 </body>
+
 </html>
