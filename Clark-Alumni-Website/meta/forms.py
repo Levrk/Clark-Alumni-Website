@@ -40,7 +40,7 @@ class UserRegistrationForm(UserCreationForm):
 class StudentSubmissionForm(forms.ModelForm):
     class Meta:
         model = StudentRequestForm
-        exclude = ["status", "student", "assigned_alum"]
+        exclude = ["student", "assigned_alum"]
 
 class StatusChangeForm(forms.ModelForm):
     class Meta:

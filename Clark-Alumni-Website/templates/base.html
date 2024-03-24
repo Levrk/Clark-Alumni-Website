@@ -8,7 +8,6 @@
   {% load static %}
   <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
   {% include "bootstrap.html" %}
-
 </head>
 
 <body>
@@ -20,7 +19,7 @@
 
   <br>
   <div class="container">
-    <form action="" method="POST">
+    <form action="" method="POST" onsubmit="return validateForm();">
       {% csrf_token %}
       <h4><b>Help Requested</b></h4>
       <input type="checkbox" id="coverLetter" name="cover_letter">
@@ -66,14 +65,29 @@
       <textarea id="description" name="description" placeholder="Your description here.." rows="10" cols="50"
         maxlength="10000"></textarea>
       <br>
+      <input type="hidden" name="status" id="status_field" value="">
       <input type="reset" value="Reset">
-      <input type="submit" value="Submit" id="submit-button" onclick="return validateForm();">
+      <input type="submit" value="Save as Draft" onclick="setStatus('draft');">
+      <input type="submit" value="Submit" id="submit-button">
       <br>
       <br>
 
     </form>
   </div>
   <script>
+    function setStatus(status) {
+      document.getElementById("status_field").value = status;
+    }
+
+    function isValidDocumentLink(url) {
+      // Regular expressions to match Google Drive, OneDrive, and SharePoint links
+      var googleDriveRegex = /^https:\/\/drive\.google\.com\/.*$/;
+      var oneDriveRegex = /^https:\/\/onedrive\.live\.com\/.*$/;
+      var sharepointRegex = /^https:\/\/.*\.sharepoint\.com\/.*$/;
+
+      return googleDriveRegex.test(url) || oneDriveRegex.test(url) || sharepointRegex.test(url);
+    }
+
     function validateForm() {
       var coverLetter = document.getElementById("coverLetter").checked;
       var resume = document.getElementById("resume").checked;
@@ -103,14 +117,9 @@
       return true;
     }
 
-    function isValidDocumentLink(url) {
-      // Regular expressions to match Google Drive, OneDrive, and SharePoint links
-      var googleDriveRegex = /^https:\/\/drive\.google\.com\/.*$/;
-      var oneDriveRegex = /^https:\/\/onedrive\.live\.com\/.*$/;
-      var sharepointRegex = /^https:\/\/.*\.sharepoint\.com\/.*$/;
-
-      return googleDriveRegex.test(url) || oneDriveRegex.test(url) || sharepointRegex.test(url);
-    }
+    document.getElementById("submit-button").addEventListener("click", function () {
+      setStatus('submitted');
+    });
 
   </script>
 
@@ -120,6 +129,9 @@
     <p>Thank you for submitting your career advancement support request!</p>
     <a href="{% url 'viewmyrequests' %}" id="viewRequests" class="btn btn-primary viewRequests">View My
       Requests</a>
+    {% endif %}
+    {% if form_drafted %}
+    <p>Your request has been saved as a draft.</p>
     {% endif %}
   </div>
   {% endif %}
