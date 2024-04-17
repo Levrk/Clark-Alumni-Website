@@ -53,7 +53,7 @@ def no_access_alumni(request):
 @user_passes_test(is_student, login_url="/noaccessalumni") #Checks user is not alum, and redirects them to "/noaccessalumni" if they are
 @never_cache
 def return_my_requests(request):
-    all_requests = StudentRequestForm.objects.filter(student=request.user) #Collects user's requests
+    all_requests = [post for post in StudentRequestForm.objects.filter(student=request.user) if post.status != 'draft'] #Collects user's requests
     return render(request, "view_my_requests.html", {"all_requests": all_requests})
 
 #Directs alum to "/viewrequests" and collects unanswered requests
@@ -173,12 +173,15 @@ class StudentRequestFormSubmitView(LoginRequiredMixin, View):
         return render(request, "base.html", context)
 
     def post(self, request):
-        print(request)
-        form = StudentSubmissionForm(request.POST)
-        form.instance.student = request.user
-        form.instance.status = "submitted"
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Your request has been received")
-            return render(request, "base.html", {'form_submitted': True})
-        return render(request, "base.html", {'form': form})
+      form = StudentSubmissionForm(request.POST)
+      inst = form.instance
+      inst.student = request.user
+      if form.is_valid():
+        form.save()
+        if inst.status == 'submitted':
+          messages.success(request, "Your request has been received")
+          return render(request, "base.html", {'form_submitted': True})
+        else:
+          messages.success(request, "Your request has been saved as a draft")
+          return render(request, "base.html", {'form_drafted': True})
+      return render(request, "base.html", {'form': form})
