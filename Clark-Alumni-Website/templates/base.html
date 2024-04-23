@@ -132,6 +132,8 @@
     {% endif %}
     {% if form_drafted %}
     <p>Your request has been saved as a draft.</p>
+    <a href="{% url 'draft' %}" id="draft" class="btn btn-primary draft" style="background-color: #cc0808">View My
+      Drafts</a>
     {% endif %}
   </div>
   {% endif %}

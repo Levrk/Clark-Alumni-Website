@@ -78,9 +78,11 @@
                     <!-- Student navigation buttons -->
                     <div class="padded-button" style="float:right; margin:20px;">
                         <a class="nav-link padded-button" href="{% url 'home' %}">Home</a>
+                        <a class="nav-link padded-button" href="{% url 'base' %}">Submit Request</a>
                         <a class="nav-link padded-button" href="{% url 'viewmyrequests' %}">View Requests</a>
                         <!-- Profile button and dropdown -->
                         <div class="profile-button" id="profile-button-slider">
+                            <a class="nav-link padded-button" href="{% url 'draft' %}">View Drafts</a>
                             <a class="nav-link padded-button" href="{% url 'logout' %}">Logout</a>
                         </div>
                         <img src="/static/profile_icon.png" class="profile" onclick="toggleButton()">

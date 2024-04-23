@@ -34,10 +34,17 @@ urlpatterns = [
         name="viewrequests",
     ),
     path(
+        "draft/",
+        login_required(views.draft, login_url="/login/"),
+        name="draft",
+    ),
+    path(
         "viewassignedrequests/",
         login_required(views.return_assigned_data, login_url="/login/"),
         name="viewassignedrequests",
     ),
+    path('delete_draft/<int:draft_id>/', views.delete_draft, name='delete_draft'),
+    path('delete_request/<int:request_id>/', views.delete_request, name='delete_request'),
     path(
         "change_status_assigned/<int:request_id>/",
         login_required(views.change_status_assigned, login_url="/login/"),
