@@ -33,6 +33,42 @@ def request_page(request, request_id):
 def home(request):
     return render(request, "users/home.html")
 
+#Directs the user to the draft page
+def draft(request):
+    return render(request, "draft.html")
+
+# Function to delete a draft
+def delete_draft(request, draft_id):
+    if request.method == 'POST':
+        draft_obj = StudentRequestForm.objects.get(pk=draft_id)
+        # Check if the request belongs to the current user
+        if draft_obj.student == request.user:
+            # Delete the request
+            draft_obj.delete()
+            messages.success(request, "Draft deleted successfully.")
+            return HttpResponseRedirect(reverse("draft"))
+        else:
+            # If the request doesn't belong to the user, show an error message
+            messages.error(request, "You are not authorized to delete this draft.")
+    # Redirect to a relevant page
+    return HttpResponseRedirect(reverse("home"))
+
+# Function to delete a request
+def delete_request(request, request_id):
+    if request.method == 'POST':
+        request_obj = StudentRequestForm.objects.get(pk=request_id)
+        # Check if the request belongs to the current user
+        if request_obj.student == request.user:
+            # Delete the request
+            request_obj.delete()
+            messages.success(request, "Request deleted successfully.")
+            return HttpResponseRedirect(reverse("viewmyrequests"))
+        else:
+            # If the request doesn't belong to the user, show an error message
+            messages.error(request, "You are not authorized to delete this request.")
+    # Redirect to a relevant page
+    return HttpResponseRedirect(reverse("home"))
+
 #Returns True if the given user profile is an alum, otherwise, False
 def is_alum(user):
     return user.groups.filter(name=ALUM_GROUP_NAME).exists()
@@ -55,6 +91,13 @@ def no_access_alumni(request):
 def return_my_requests(request):
     all_requests = [post for post in StudentRequestForm.objects.filter(student=request.user) if post.status != 'draft'] #Collects user's requests
     return render(request, "view_my_requests.html", {"all_requests": all_requests})
+
+#Directs student to "/draft" and collects their draft
+@user_passes_test(is_student, login_url="/noaccessalumni") #Checks user is not alum, and redirects them to "/noaccessalumni" if they are
+@never_cache
+def draft(request):
+    all_drafts = StudentRequestForm.objects.filter(status='draft', student=request.user)
+    return render(request, "draft.html", {"all_drafts": all_drafts})
 
 #Directs alum to "/viewrequests" and collects unanswered requests
 @user_passes_test(is_alum, login_url="/noaccess") #Checks user is not student, and redirects them to "/noaccess" if they are

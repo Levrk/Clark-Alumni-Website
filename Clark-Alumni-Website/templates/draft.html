@@ -1,0 +1,299 @@
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Draft</title>
+
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'view_my_requests.css' %}">
+
+  <style>
+    /* Add some padding to the table cells */
+    table {
+      border-spacing: 0 15px;
+      /* Add vertical spacing between rows */
+      background: transparent;
+      /* Make the table background transparent */
+    }
+
+    table th,
+    table td {
+      background: #fff;
+      /* Add a background to the cells */
+      border: none;
+      /* Remove the cell borders */
+    }
+
+    /* Add a background color to the table header */
+    table thead {
+      background-color: #f2f2f2;
+      padding-bottom: 20px;
+      /* Adjust this value as needed */
+    }
+
+    table thead th {
+      padding-bottom: 20px;
+      /* Adjust this value as needed */
+    }
+
+
+    /* Add hover effects to the table rows */
+    table tbody tr:hover {
+      background-color: #ddd;
+    }
+
+    /* Add some margin to the bottom of each row */
+    table tbody tr {
+      margin-bottom: 10px;
+    }
+
+    /* Add border radius to each row */
+    table tbody tr {
+      border-radius: 10px;
+    }
+
+    /* Add borders and border radius to the table */
+    table {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+      /* Make sure the border radius is applied to the table */
+    }
+
+    /* Make the submission date a bit bigger and in a box */
+    .submission-date {
+      font-size: 30px;
+      padding: 10px;
+      /* Increase padding to make the box bigger */
+      display: inline-block;
+      color: black;
+      border-radius: 5px;
+      font-weight: bold;
+      /* Make the date text bold */
+      margin-right: 10px;
+      /* Add right margin to create space between each box */
+    }
+
+    /* Change the color of the status based on its value */
+    .status {
+      padding: 5px;
+      color: white;
+      border-radius: 5px;
+    }
+
+    .status-submitted {
+      background-color: #cc0808;
+    }
+
+    .status-assigned {
+      background-color: #17a41a;
+    }
+
+    .status-taken {
+      background-color: #333;
+      /* Change this to the color you want for the "taken" status */
+    }
+
+    .collapse {
+      background-color: white;
+      /* Make the drop-down menu white */
+      transition: height 0.5s ease-out, opacity 0.5s ease-out;
+      opacity: 0;
+    }
+
+    .collapsing {
+      transition: height 0.35s ease-out, opacity 0.35s ease-out;
+      opacity: 0.5;
+    }
+
+    .collapse.show {
+      transition: height 0.35s ease-out, opacity 0.35s ease-out;
+      opacity: 1;
+    }
+
+    .my-accordion {
+      padding: 20px !important;
+      /* Increase padding to make the box bigger */
+      margin-bottom: 10px !important;
+      /* Add bottom margin to create space between each box */
+      position: relative;
+      /* Add position relative to make the delete button absolute */
+    }
+
+    .my-card {
+      margin-bottom: 20px;
+      /* Add space between each box */
+      padding: 20px;
+      /* Increase the size of the box */
+    }
+
+    .comment-cell {
+      text-align: left;
+      margin-bottom: 20px;
+      /* Add space between each box */
+    }
+
+    .clickable td {
+      background-color: rgb(208, 208, 208) !important;
+      /* Change this to the shade of red you want */
+      padding: 20px;
+      /* Increase padding to make the box bigger */
+      font-size: 20px;
+      /* Increase font size if needed */
+      padding: 10px;
+      /* Increase padding to make the box bigger */
+      color: black;
+      border-radius: 10px;
+      font-weight: bold;
+      /* Make the date text bold */
+      margin-right: 10px;
+      /* Add right margin to create space between each box */
+    }
+
+    .date {
+      float: left;
+      padding-left: 20px;
+      /* Adjust this to add more or less space */
+    }
+
+    .help-requested {
+      float: right;
+      background-color: rgb(255, 0, 234);
+      color: white;
+      padding: 5px;
+      font-size: 12px;
+      /* Adjust this to change the text size */
+      height: auto;
+      /* Adjust this to change the box height */
+      border-radius: 5px;
+      /* Make the box circular */
+    }
+
+    /* Style for the delete button */
+    .delete-button {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+    }
+  </style>
+
+  <!-- Bootstrap CSS -->
+  {% include "bootstrap.html" %}
+
+
+</head>
+
+
+<body>
+  {% include "navbar.html" %}
+  <br>
+  <div class="container mt-3">
+    <h1 class="text-center">My Drafts</h1>
+  </div>
+
+  <div class="container mt-3">
+    <table class="table table-striped tabindex" id="myTable">
+      <thead class="bg-danger">
+        <tr>
+          <th colspan="9" class="text-center">Click Draft For More Information</th>
+        </tr>
+        <tr style="height: 10px;"></tr> <!-- This is the new spacer row -->
+      </thead>
+      <tbody>
+        {% for draft in all_drafts %}
+        <tr class="clickable" data-toggle="collapse" data-target="#details{{ forloop.counter }}" aria-expanded="false"
+          aria-controls="collapseExample">
+          <td data-cell="centered">
+            <div class="date">{{ draft.submission_date | date:"m/d/Y" }}</div>
+            <div class="help-requested">
+              {% for field in draft.help_requested_list_display %}
+              {{ field }}
+              {% endfor %}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="9" class="p-0">
+            <div id="details{{ forloop.counter }}" class="collapse my-accordion">
+              <div class="p-3">
+                <p class="status status-{{ draft.status|lower }}"><strong>Status: {{draft.status.title}}</strong>
+                </p>
+                <div class="d-flex flex-row justify-content-start align-items-center">
+                  <!-- Add the delete button with a confirmation modal -->
+                  <button type="button" class="btn btn-danger delete-button" data-toggle="modal"
+                    data-target="#confirmDeleteModal" data-delete-url="{% url 'delete_draft' draft.id %}">Delete</button>
+                </div>
+                <p><strong>Urgency:</strong> {{ draft.support_urgency|lower|replace_underscore_with_space|capfirst }}
+                </p>
+                <p><strong>Job Interest:</strong> {{ draft.job_interest|default:"-" }}</p>
+                <p><strong>Industry Interest:</strong> {{ draft.industry_interest|default:"-" }}</p>
+                <p><strong>Document Link:</strong>
+                  {% if draft.document_link %}
+                  <a href="{{ draft.document_link }}">Document Link</a>
+                  {% else %}
+                  -
+                  {% endif %}
+                </p>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr class="spacer" style="height: 10px;"></tr> <!-- This is the new spacer row -->
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Confirmation modal for delete action -->
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this draft?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <form id="deleteDraftForm" action="" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-GLhlTQ8i6c9tNY7dhBQ9QI8fEL3puh3+5tLZ5gvmMqE+I1E2HQpDWrQlgO9x87T"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+  <script>
+    $(document).ready(function () {
+      // Handle click on the delete button to set the action of the delete form
+      $('.delete-button').on('click', function () {
+        var deleteUrl = $(this).data('delete-url');
+        $('#deleteDraftForm').attr('action', deleteUrl);
+      });
+    });
+  </script>
+
+  {% include "tableFunctions.html" %}
+</body>
+
+</html>
