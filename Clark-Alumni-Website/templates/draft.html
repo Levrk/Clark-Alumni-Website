@@ -12,172 +12,104 @@
   <link rel="stylesheet" type="text/css" href="{% static 'view_my_requests.css' %}">
 
   <style>
-    /* Add some padding to the table cells */
+    /* General table styling */
     table {
-      border-spacing: 0 15px;
-      /* Add vertical spacing between rows */
-      background: transparent;
-      /* Make the table background transparent */
+        border-spacing: 0 15px; /* Vertical spacing between rows */
+        background: transparent; /* Transparent table background */
     }
 
-    table th,
-    table td {
-      background: #fff;
-      /* Add a background to the cells */
-      border: none;
-      /* Remove the cell borders */
+    /* Styling for all table cells */
+    table th, table td {
+        background: #fff; /* White background for cells */
+        border: none; /* No borders on cells */
     }
 
-    /* Add a background color to the table header */
+    /* Header row specific styling */
     table thead {
-      background-color: #f2f2f2;
-      padding-bottom: 20px;
-      /* Adjust this value as needed */
+        background-color: #f2f2f2; /* Light grey background */
     }
+
 
     table thead th {
-      padding-bottom: 20px;
-      /* Adjust this value as needed */
+        padding-bottom: 20px; /* Bottom padding for header cells */
     }
 
+    /* Hover effects and margin for table body rows */
 
-    /* Add hover effects to the table rows */
     table tbody tr:hover {
-      background-color: #ddd;
+        background-color: #ddd; /* Light grey background on hover */
     }
 
-    /* Add some margin to the bottom of each row */
     table tbody tr {
-      margin-bottom: 10px;
+        margin-bottom: 5px; /* Bottom margin for rows */
+        border-radius: 5px; /* Rounded corners for rows */
     }
 
-    /* Add border radius to each row */
-    table tbody tr {
-      border-radius: 10px;
+    /* Styling for specific elements within data cells */
+    .submission-date, .status, .date, .help-requested {
+        font-size: 20px;
+        padding: 10px; /* Padding around text */
+        display: inline-block; /* Inline block for alignment */
+        color: black; /* Black text color */
+        border-radius: 5px; /* Rounded corners */
+        font-weight: bold; /* Bold font weight */
+        margin-right: 10px; /* Right margin for spacing */
     }
 
-    /* Add borders and border radius to the table */
-    table {
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      overflow: hidden;
-      /* Make sure the border radius is applied to the table */
+    /* Smaller font size and specific styling for help requested */
+    .help-requested {
+        float: right; /* Align to the right */
+        background-color: rgb(255, 0, 234); /* Pink background */
+        color: white; /* White text */
+        font-size: 12px; /* Smaller font size */
     }
 
-    /* Make the submission date a bit bigger and in a box */
-    .submission-date {
-      font-size: 30px;
-      padding: 10px;
-      /* Increase padding to make the box bigger */
-      display: inline-block;
-      color: black;
-      border-radius: 5px;
-      font-weight: bold;
-      /* Make the date text bold */
-      margin-right: 10px;
-      /* Add right margin to create space between each box */
-    }
-
-    /* Change the color of the status based on its value */
-    .status {
-      padding: 5px;
-      color: white;
-      border-radius: 5px;
-    }
-
+    /* Status colors for various statuses */
     .status-submitted {
-      background-color: #cc0808;
+        background-color: #43cc08; /* Red background */
     }
 
-    .status-assigned {
-      background-color: #17a41a;
+    .status-assigned, .status-closed {
+        background-color: #ff0000; /* Green background */
     }
 
     .status-taken {
-      background-color: #333;
-      /* Change this to the color you want for the "taken" status */
+        background-color: #00b7ff; /* Dark grey for 'taken' status */
     }
 
-    .collapse {
-      background-color: white;
-      /* Make the drop-down menu white */
-      transition: height 0.5s ease-out, opacity 0.5s ease-out;
-      opacity: 0;
+    /* Animations for collapsible elements */
+    .collapse, .collapsing, .collapse.show {
+        background-color: white; /* White background for collapsible content */
+        transition: height 0.5s ease-out, opacity 0.5s ease-out; /* Smooth transition for collapse */
     }
 
     .collapsing {
-      transition: height 0.35s ease-out, opacity 0.35s ease-out;
-      opacity: 0.5;
+        opacity: 0.5; /* Semi-transparent when collapsing */
     }
 
     .collapse.show {
-      transition: height 0.35s ease-out, opacity 0.35s ease-out;
-      opacity: 1;
+        opacity: 1; /* Fully opaque when fully shown */
     }
 
-    .my-accordion {
-      padding: 20px !important;
-      /* Increase padding to make the box bigger */
-      margin-bottom: 10px !important;
-      /* Add bottom margin to create space between each box */
-      position: relative;
-      /* Add position relative to make the delete button absolute */
+    /* Styling for accordion elements */
+    .my-accordion, .my-card, .comment-cell {
+        padding: 20px; /* Padding inside the elements */
+        margin-bottom: 20px; /* Bottom margin */
     }
 
-    .my-card {
-      margin-bottom: 20px;
-      /* Add space between each box */
-      padding: 20px;
-      /* Increase the size of the box */
-    }
-
-    .comment-cell {
-      text-align: left;
-      margin-bottom: 20px;
-      /* Add space between each box */
-    }
-
+    /* Styling for clickable cells */
     .clickable td {
-      background-color: rgb(208, 208, 208) !important;
-      /* Change this to the shade of red you want */
-      padding: 20px;
-      /* Increase padding to make the box bigger */
-      font-size: 20px;
-      /* Increase font size if needed */
-      padding: 10px;
-      /* Increase padding to make the box bigger */
-      color: black;
-      border-radius: 10px;
-      font-weight: bold;
-      /* Make the date text bold */
-      margin-right: 10px;
-      /* Add right margin to create space between each box */
+        background-color: rgb(208, 208, 208); /* Light grey background */
+        font-size: 20px; /* Larger font size */
+        color: black; /* Black text color */
+        border-radius: 10px; /* Rounded corners */
+        font-weight: bold; /* Bold text */
     }
 
-    .date {
-      float: left;
-      padding-left: 20px;
-      /* Adjust this to add more or less space */
-    }
-
-    .help-requested {
-      float: right;
-      background-color: rgb(255, 0, 234);
-      color: white;
-      padding: 5px;
-      font-size: 12px;
-      /* Adjust this to change the text size */
-      height: auto;
-      /* Adjust this to change the box height */
-      border-radius: 5px;
-      /* Make the box circular */
-    }
-
-    /* Style for the delete button */
+    /* Move the delete button to the bottom right corner */
     .delete-button {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
+      margin-top: auto;
+      margin-left: auto;
     }
   </style>
 
