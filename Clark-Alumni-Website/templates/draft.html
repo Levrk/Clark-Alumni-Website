@@ -106,10 +106,12 @@
         font-weight: bold; /* Bold text */
     }
 
-    /* Move the delete button to the bottom right corner */
+    /* Move the delete button to the bottom left corner with some space from the left edge */
     .delete-button {
-      margin-top: auto;
-      margin-left: auto;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      margin-right: 10px;
+      float: left;
     }
   </style>
 
@@ -139,7 +141,7 @@
         {% for draft in all_drafts %}
         <tr class="clickable" data-toggle="collapse" data-target="#details{{ forloop.counter }}" aria-expanded="false"
           aria-controls="collapseExample">
-          <td data-cell="centered">
+          <td data-cell="right">
             <div class="date">{{ draft.submission_date | date:"m/d/Y" }}</div>
             <div class="help-requested">
               {% for field in draft.help_requested_list_display %}
@@ -217,10 +219,21 @@
 
   <script>
     $(document).ready(function () {
+      $(".clickable").click(function (event) {
+        event.stopPropagation();
+      });
+
       // Handle click on the delete button to set the action of the delete form
       $('.delete-button').on('click', function () {
         var deleteUrl = $(this).data('delete-url');
-        $('#deleteDraftForm').attr('action', deleteUrl);
+        $('#deleteRequestForm').attr('action', deleteUrl);
+      });
+
+      // Handle the show.bs.modal event
+      $('.modal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var comments = button.data('comments');
+        $(this).find('.comments-container p').text(comments);
       });
     });
   </script>

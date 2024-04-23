@@ -11,7 +11,7 @@
   <style>
     /* General table styling */
     table {
-        border-spacing: 0 15px; /* Vertical spacing between rows */
+        border-spacing: 15px; /* Vertical spacing between rows */
         background: transparent; /* Transparent table background */
     }
 
@@ -26,19 +26,17 @@
         background-color: #f2f2f2; /* Light grey background */
     }
 
-
     table thead th {
         padding-bottom: 20px; /* Bottom padding for header cells */
     }
 
     /* Hover effects and margin for table body rows */
-
     table tbody tr:hover {
-        background-color: #ddd; /* Light grey background on hover */
+        background-color: #ffd8d8; /* Light grey background on hover */
     }
 
     table tbody tr {
-        margin-bottom: 5px; /* Bottom margin for rows */
+        margin-bottom: 100px; /* Bottom margin for rows */
         border-radius: 5px; /* Rounded corners for rows */
     }
 
@@ -48,7 +46,7 @@
         padding: 10px; /* Padding around text */
         display: inline-block; /* Inline block for alignment */
         color: black; /* Black text color */
-        border-radius: 5px; /* Rounded corners */
+        border-radius: 10px; /* Rounded corners */
         font-weight: bold; /* Bold font weight */
         margin-right: 10px; /* Right margin for spacing */
     }
@@ -56,7 +54,7 @@
     /* Smaller font size and specific styling for help requested */
     .help-requested {
         float: right; /* Align to the right */
-        background-color: rgb(255, 0, 234); /* Pink background */
+        background-color: rgb(255, 0, 0); /* Pink background */
         color: white; /* White text */
         font-size: 12px; /* Smaller font size */
     }
@@ -66,12 +64,16 @@
         background-color: #43cc08; /* Red background */
     }
 
-    .status-assigned, .status-closed {
-        background-color: #ff0000; /* Green background */
+    .status-closed {
+        background-color: #f32a0b; /* Green background */
+    }
+
+    .status-assigned {
+        background-color: #0ae6f2; /* Green background */
     }
 
     .status-taken {
-        background-color: #00b7ff; /* Dark grey for 'taken' status */
+        background-color: #00a2ff; /* Dark grey for 'taken' status */
     }
 
     /* Animations for collapsible elements */
@@ -90,26 +92,19 @@
 
     /* Styling for accordion elements */
     .my-accordion, .my-card, .comment-cell {
-        padding: 20px; /* Padding inside the elements */
-        margin-bottom: 20px; /* Bottom margin */
+        padding: 10px; /* Padding inside the elements */
+        margin-bottom: 10px; /* Bottom margin */
     }
 
     /* Styling for clickable cells */
     .clickable td {
         background-color: rgb(208, 208, 208); /* Light grey background */
-        font-size: 20px; /* Larger font size */
+        font-size: 10px; /* Larger font size */
         color: black; /* Black text color */
         border-radius: 10px; /* Rounded corners */
         font-weight: bold; /* Bold text */
     }
-
-
-    /* Move the delete button to the bottom right corner */
-    .delete-button {
-      margin-top: auto;
-      margin-left: auto;
-    }
-  </style>
+</style>
 
   {% include "bootstrap.html" %}
 </head>
@@ -145,13 +140,7 @@
                   <button class="btn btn-primary view-comments-button mt-2 mb-3"
                     onclick="location.href='{% url 'request_page' request.id %}'">View Request</button>
                 </div>
-                <div class="d-flex flex-row justify-content-end align-items-center">
-                  <!-- Add the delete button with a confirmation modal -->
-                  <button type="button" class="btn btn-danger delete-button" data-toggle="modal"
-                    data-target="#confirmDeleteModal" data-delete-url="{% url 'delete_request' request.id %}">Delete</button>
-                </div>
-                <p><strong>Urgency:</strong> {{ request.support_urgency|lower|replace_underscore_with_space|capfirst }}
-                </p>
+                <p><strong>Urgency:</strong> {{ request.support_urgency|lower|replace_underscore_with_space|capfirst }}</p>
                 <p><strong>Job Interest:</strong> {{ request.job_interest|default:"-" }}</p>
                 <p><strong>Industry Interest:</strong> {{ request.industry_interest|default:"-" }}</p>
                 <p><strong>Document Link:</strong>
@@ -167,77 +156,16 @@
       </tbody>
     </table>
   </div>
-  <!-- Your existing modal code for View Comments -->
-  {% for request in all_requests %}
-  <div class="modal fade" id="viewComments{{ forloop.counter }}" tabindex="-1"
-    aria-labelledby="viewCommentsLabel{{ forloop.counter }}" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title" id="viewCommentsLabel{{ forloop.counter }}">View Comments</h1>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">x</button>
-        </div>
-        <div class="modal-body">
-          <div class="comments-container">
-            <p>{{ request.my_comments }}</p>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  {% endfor %}
-
-  <!-- Confirmation modal for delete action -->
-  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Are you sure you want to delete this request?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <form id="deleteRequestForm" action="" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Delete</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-    integrity="sha384-GLhlTQ8i6c9tNY7dhBQ9QI8fEL3puh3+5tLZ5gvmMqE+I1E2HQpDWrQlgO9x87T" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-
-
+  {% include "tableFunctions.html" %}
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-GLhlTQ8i6c9tNY7dhBQ9QI8fEL3puh3+5tLZ5gvmMqE+I1E2HQpDWrQlgO9x87T" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <script>
     $(document).ready(function () {
       $(".clickable").click(function (event) {
         event.stopPropagation();
       });
 
-      // Handle click on the delete button to set the action of the delete form
-      $('.delete-button').on('click', function () {
-        var deleteUrl = $(this).data('delete-url');
-        $('#deleteRequestForm').attr('action', deleteUrl);
-      });
-
-      // Handle the show.bs.modal event
       $('.modal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var comments = button.data('comments');
