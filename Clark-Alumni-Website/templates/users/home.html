@@ -1,102 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Clark Alumni Home</title>
 
+    <!-- Static files and CSS -->
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
-    
-    <title>Clark Alumni Home</title>
     {% include "bootstrap.html" %}
-</head>
-
-
+    
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
+    <!-- Navigation Bar -->
+    {% include "navbar.html" %}
 
-{% load static %}
-{% include "navbar.html" %}
-
-{% load static %}
-<br/><br/>
-<h5 style="text-align: center;">Get valuable guidance and mentoring from our dedicated computer science alumni and
-    faculty. Take the next steps toward your bright future.</h5>
-<br>
-<div class="container-fluid h-custom">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-md-9 col-lg-6 col-xl-5" style="text-align: left;">
-            <img src="{% static 'loginphoto.jpg' %}" style="max-width: 100%; max-height: auto;">
-        </div>
-        <div class="col-md-15 col-lg-6 col-xl-4 offset-xl-1">
-            <br/>&nbsp;<br/>
-            <br/>&nbsp;<br/>
-            <div class="text-center mb-4">
-                <h2>Computer Science Career Advancement Support</h2>
+    <!-- Main content -->
+    <br><br>
+    <h5 style="text-align: center;">Get valuable guidance and mentoring from our dedicated computer science alumni and faculty. Take the next steps toward your bright future.</h5>
+    <br>
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="{% static 'loginphoto.jpg' %}" style="max-width: 100%; height: auto;">
             </div>
-            {% if user.is_authenticated %}
-                <h6>Welcome! Please use this form to submit your career advancement support request and get connected
-                    with our
-                    dedicated computer science alumni and/or faculty for valuable guidance and mentoring opportunities
-                    on job,
-                    internship, and grad school applications. Simply fill out the details below, and let's take the next
-                    steps toward your bright future!</h6>
-                <br>
-                <div class="alert alert-success" role="alert">
-                    <h3>Welcome {{ user.first_name }}!</h3>
-                    {% if user.is_student %}
-                        <a href="{% url 'base' %}" class="btn btn-danger">Submit a Request</a>
-                    {% endif %}
-                    <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <div class="text-center mb-4">
+                    <h2>Computer Science Career Advancement Support</h2>
                 </div>
-                <div class="container">
-                <div class="custom-box">
-                    <h4>Reference Links</h4>
-                    {% if user.is_alum %}
-                        <!-- Stretched link inside the box -->
-                        <a class="icon-link icon-link-hover" href="{% url 'viewrequests' %}">
-                            Unassigned Requests
-                            <svg class="bi" aria-hidden="true">
-                                <use xlink:href="#arrow-right"></use>
-                            </svg>
-                        </a>
-                        <a class="icon-link icon-link-hover" href="{% url 'viewassignedrequests' %}">
-                            My Assigned Requests
-                            <svg class="bi" aria-hidden="true">
-                                <use xlink:href="#arrow-right"></use>
-                            </svg>
-                        </a>
-                    {% elif user.is_student %}
-                        <a class="icon-link icon-link-hover" href="{% url 'viewmyrequests' %}">
-                            My Requests
-                            <svg class="bi" aria-hidden="true">
-                                <use xlink:href="#arrow-right"></use>
-                            </svg>
-                        </a>
-                        <a class="icon-link icon-link-hover" href="{% url 'draft' %}">
-                            View Drafts
-                            <svg class="bi" aria-hidden="true">
-                                <use xlink:href="#arrow-right"></use>
-                            </svg>
-                        </a>
-                    {% endif %}
-                </div>
-            {% else %}
-                <!-- Display a message or content for unauthenticated users -->
-                <div class="alert alert-success" role="alert">
-                    <h3>Welcome!</h3>
-                    <a href="{% url 'register' %}" class="btn btn-danger">Register</a>
-                    <a href="{% url 'login' %}" class="btn btn-danger">Login</a>
-                </div>
-
-
-            {% endif %}
+                {% if user.is_authenticated %}
+                    <h6>Welcome! Please use this form to submit your career advancement support request and get connected with our dedicated computer science alumni and/or faculty for valuable guidance and mentoring opportunities on job, internship, and grad school applications. Simply fill out the details below, and let's take the next steps toward your bright future!</h6>
+                    <br>
+                    <div class="alert alert-success" role="alert">
+                        <h3>Welcome {{ user.first_name }}!</h3>
+                        {% if user.is_student %}
+                            <a href="{% url 'base' %}" class="btn btn-danger">Submit a Request</a>
+                        {% endif %}
+                        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+                    </div>
+                    <div class="container">
+                        <div class="custom-box">
+                            <h4>Reference Links</h4>
+                            {% if user.is_alum %}
+                                <a class="icon-link icon-link-hover" href="{% url 'viewrequests' %}">Unassigned Requests</a>
+                                <a class="icon-link icon-link-hover" href="{% url 'viewassignedrequests' %}">My Assigned Requests</a>
+                            {% elif user.is_student %}
+                                <a class="icon-link icon-link-hover" href="{% url 'viewmyrequests' %}">My Requests</a>
+                                <a class="icon-link icon-link-hover" href="{% url 'draft' %}">View Drafts</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-success" role="alert">
+                        <h3>Welcome!</h3>
+                        <a href="{% url 'register' %}" class="btn btn-danger">Register</a>
+                        <a href="{% url 'login' %}" class="btn btn-danger">Login</a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
-</div>
-</section>
 </body>
 </html>

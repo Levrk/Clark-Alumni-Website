@@ -78,8 +78,8 @@
                         <form method="post" action="{% url 'status_change_assigned' request.id %}">
                             {% csrf_token %}
                             <input type="hidden" name="status" value="assigned">
-                            <input type="hidden" name="email" value="{{ request.student.email }}">
-                            <button type="submit" class="btn btn-primary">Take It</button>
+                            <input type="hidden" name="email" value="{{ request.student }}">
+                            <button type="submit" class="action-button">Take It</button>
                         </form>
                     </td>
                 </tr>

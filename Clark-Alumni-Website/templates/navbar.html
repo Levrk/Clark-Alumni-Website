@@ -1,76 +1,76 @@
 {% load static %}
 <style>
-    /* Styling for the navigation buttons */
+    /* Reducing the overall padding for the navbar for a slimmer appearance */
+    .navbar {
+        padding: 0.25rem 1rem; /* Adjusted top/bottom and left/right padding */
+        background-color: #000000; /* Maintaining the background color */
+    }
+
+    /* Ensuring navigation buttons are compact and aligned */
     .padded-button {
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        margin-right: 20px; /* Right margin for spacing between buttons */
     }
 
-    /* Styling for individual navigation links */
+    /* Styling adjustments for navigation links */
     .padded-button a {
-        position: relative;
-        font-size: 17px;
+        font-size: 15px; /* Smaller font size for a more compact look */
         color: #fff;
-        font-weight: 380;
         text-decoration: none;
         margin-left: 10px;
+        padding: 5px 10px; /* Padding around links for clickable area */
+        border-radius: 5px; /* Rounded corners for a softer look */
+        transition: background-color 0.3s; /* Smooth transition for hover effect */
     }
 
-    /* Underline effect on hover for navigation links */
-    .padded-button a::before {
-        content: '';
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: #fff;
-    }
-
-    .padded-button a:hover::before {
-        width: 100%;
+    /* Hover effect for navigation links */
+    .padded-button a:hover {
+        background-color: rgba(255, 255, 255, 0.2); /* Slight highlight on hover */
     }
 
     /* Styling for the brand/logo in the navbar */
     .navbar-brand {
-        margin-right: auto;
+        display: flex;
+        align-items: center;
+        padding: 0; /* Removed padding for a more aligned look */
     }
 
-    /* Styling for the user profile image */
+    /* Adjusting the profile image size for a more compact navbar */
     .profile {
-        width: 55px;
+        width: 40px; /* Smaller profile image */
         border-radius: 50%;
         cursor: pointer;
-        margin-left: 15px;
+        margin-left: auto; /* Pushes the profile image to the right */
     }
 
     /* Styling for the profile button dropdown */
     .profile-button {
         display: none;
-        flex-direction: column;
-        align-items: center;
         position: absolute;
-        top: 75%;
-        right: 10px;
-        z-index: 1;
+        top: 100%;
+        right: 0;
         background-color: #a8a5a5;
         padding: 5px;
-        box-shadow: 5px 8px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 5px; /* Rounded corners for the dropdown */
     }
 
     .profile-button a {
-        margin-bottom: 20px;
         color: #fff;
+        text-decoration: none;
+        display: block; /* Makes each link fill the dropdown */
+        padding: 5px 10px; /* Padding for better clickability */
     }
 </style>
 
+
 <body>
     <header id="nav-bar">
-        <nav class="navbar navbar-light" style="background-color: #cc0808">
+        <nav class="navbar navbar-light" style="background-color: #ec0000">
             <!-- Logo/Brand -->
             <a class="navbar-brand" href="{% url 'home' %}">
-                <img src="{% static 'logonobg2.png' %}">
+                <img src="{% static 'NEWLOGO.png' %}">
             </a>
 
             {% if user.is_authenticated %}
@@ -83,7 +83,6 @@
                         <a class="nav-link padded-button" href="{% url 'draft' %}">View Drafts</a>
                         <!-- Profile button and dropdown -->
                         <div class="profile-button" id="profile-button-slider">
-                            <a class="nav-link padded-button" href="{% url 'draft' %}">View Drafts</a>
                             <a class="nav-link padded-button" href="{% url 'logout' %}">Logout</a>
                         </div>
                         <img src="/static/profile_icon.png" class="profile" onclick="toggleButton()">

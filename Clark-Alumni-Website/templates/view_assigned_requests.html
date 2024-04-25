@@ -10,106 +10,82 @@
   {% load static %}
   <link rel="stylesheet" type="text/css" href="{% static 'view_assigned_requests.css' %}">
   <style>
-    table {
-      border-spacing: 0 15px;
-      background: transparent;
+    body {
+        font-family: 'Arial', sans-serif; /* Modern font for overall body text */
     }
 
-    table th,
-    table td {
-      background: #fff;
-      border: none;
+    .container {
+        max-width: 1200px; /* Adjust container width for better alignment and spacing */
+    }
+
+    table {
+        width: 100%; /* Ensure table uses full width of its container */
+        margin-top: 20px; /* Space out table from content above */
+        background: transparent;
+    }
+
+    table th, table td {
+        background-color: #fff; /* Ensures readability */
+        padding: 15px; /* More padding for better spacing */
+        border-bottom: 1px solid #ddd; /* Subtle separation between rows */
     }
 
     table thead {
-      background-color: #f2f2f2;
+        background-color: #007bff; /* Unified theme color for header */
+        color: #ffffff; /* White text color for contrast */
     }
 
     table thead th {
-      padding-bottom: 20px;
+        padding-top: 12px;
+        padding-bottom: 12px;
     }
 
     table tbody tr:hover {
-      background-color: #ddd;
+        background-color: #f8f9fa; /* Lighter shade for hover effect */
     }
 
-    table tbody tr {
-      margin-bottom: 10px;
-      border-radius: 10px;
+    .styled-button, .unassign-button {
+        font-weight: bold; /* Makes button text bolder */
+        padding-bottom: 10px;
+        padding-top: 12px;
+        border-radius: 5px; /* Rounded corners for buttons */
+        transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+        margin-right: 10px; /* Add space to the right of the button */
     }
 
-    table {
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      overflow: hidden;
+    .styled-button:hover, .unassign-button:hover {
+        opacity: 0.85; /* Slight transparency on hover for interaction feedback */
     }
 
-    .submission-date {
-      font-size: 30px;
-      padding: 10px;
-      display: inline-block;
-      color: black;
-      border-radius: 5px;
-      font-weight: bold;
-      margin-right: 10px;
+    .btn-primary {
+        background-color: #17a2b8; /* A fresher, more vibrant color */
+        border-color: #17a2b8; /* Consistent border color */
+    }
+
+    .btn-danger {
+        background-color: #dc3545; /* Standard danger color for important actions */
     }
 
     .status {
-      padding: 5px;
-      color: white;
-      border-radius: 5px;
+        font-size: 12px;
+        padding: 5px 10px;
+        border-radius: 10px; /* Rounded corners for status tags */
     }
 
-    .status-submitted {
-      background-color: #cc0808;
-    }
-
-    .status-assigned {
-      background-color: #17a41a;
-    }
-
-    .status-closed {
-      background-color: #007bff;
-    }
-
-    .status-taken {
-      background-color: #333;
-    }
+    .status-submitted { background-color: #ffc107; } /* Warning color for submitted status */
+    .status-assigned { background-color: #28a745; } /* Success color for assigned status */
+    .status-closed { background-color: #dc3545; } /* Danger color for closed status */
+    .status-taken { background-color: #6c757d; } /* Secondary color for taken status */
 
     .collapse {
-      background-color: white;
-      opacity: 0;
-      transition: height 0.5s ease-out, opacity 0.5s ease-out;
+        transition: all 0.35s ease-in-out; /* Smooth transition for collapsible elements */
     }
 
-    .collapse.show {
-      opacity: 1;
-      transition: height 0.35s ease-out, opacity 0.35s ease-out;
+    .modal-content {
+        border-radius: 15px; /* Rounded corners for modal pop-ups */
     }
+</style>
 
-    .styled-button {
-      border: 2px solid #000;
-      /* Add a border */
-      padding: 10px;
-      /* Add some padding */
-      background-color: #ff0000;
-      /* Set the background color */
-      color: #000;
-      /* Set the text color */
-      text-decoration: none;
-      /* Remove underline */
-      display: inline-block;
-      /* Make it inline */
-      font-size: 16px;
-      /* Increase font size */
-      margin: 4px 2px;
-      /* Add some margin */
-      cursor: pointer;
-      /* Change mouse cursor on hover */
-      border-radius: 5px;
-      /* Optional: Add rounded corners */
-    }
-  </style>
   {% include "bootstrap.html" %}
 </head>
 
@@ -138,22 +114,20 @@
       </div>
     </form>
 
-    <table class="table table-striped tabindex" id="myTable">
-      <thead class="bg-danger">
+    <table class="table table-striped" id="myTable">
+      <thead class="bg-danger text-center">
         <tr>
-          <th colspan="9" class="text-center">Click Request For More Information</th>
+          <th colspan="9">Click Request For More Information</th>
         </tr>
       </thead>
       <tbody>
         {% for request in assigned_requests %}
-        <tr class="clickable" data-toggle="collapse" data-target="#details{{ forloop.counter }}" aria-expanded="false"
-          aria-controls="collapseExample">
+        <tr class="clickable" data-toggle="collapse" data-target="#details{{ forloop.counter }}" aria-expanded="false" aria-controls="details{{ forloop.counter }}">
           <td>{{ request.submission_date | date:"m/d/Y" }}</td>
           <td>{{ request.student.first_name }} {{ request.student.last_name }}</td>
           <td>{{ request.support_urgency|lower|replace_underscore_with_space|capfirst }}</td>
           <td>
-            <button class="btn btn-primary view-comments-button mt-2 mb-3"
-              onclick="location.href='{% url 'request_page' request.id %}'">View Request</button>
+            <button class="btn btn-primary view-comments-button mt-2 mb-3" onclick="location.href='{% url 'request_page' request.id %}'">View Request</button>
           </td>
         </tr>
         <tr id="details{{ forloop.counter }}" class="collapse">
@@ -163,27 +137,30 @@
               {% if request.document_link %}
               <a href="{{ request.document_link }}">Document Link</a>
               {% else %}
-              -
+              <span>-</span>
               {% endif %}
+
               <!-- Unassign -->
-              <form method="post" action="{% url 'status_change_unassigned' request.id %}">
-                {% csrf_token %}
-                <input type="hidden" name="status" value="unassigned">
-                <button type="submit" class="dropdown-item styled-button">Unassign</button>
-              </form>
+            <form method="post" action="{% url 'status_change_unassigned' request.id %}">
+              {% csrf_token %}
+              <input type="hidden" name="status" value="submitted">
+              <button type="submit" class="btn btn-danger unassign-button">Unassign</button>
+            </form>
+
               <!-- Close Request -->
               <form method="post" action="{% url 'status_change_closed' request.id %}">
                 {% csrf_token %}
                 <input type="hidden" name="status" value="closed">
-                <button type="submit" class="dropdown-item styled-button">Close Request</button>
+                <button type="submit" class="btn btn-danger styled-button">Close Request</button>
               </form>
+
             </div>
           </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
-  </div>
+    
 
   {% include "tableFunctions.html" %}
 
