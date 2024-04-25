@@ -37,6 +37,17 @@ def home(request):
 def draft(request):
     return render(request, "draft.html")
 
+def submit_draft(request, draft_id):
+    if request.method == 'POST':
+        draft_obj = StudentRequestForm.objects.get(pk=draft_id)
+        # Update the status of the draft and save it
+        draft_obj.status = 'submitted'
+        draft_obj.save()
+        messages.success(request, "Draft submitted successfully.")
+        return redirect("viewmyrequests")
+    # If the request method is not POST, redirect to the home page or a relevant page
+    return redirect("home")
+
 # Function to delete a draft
 def delete_draft(request, draft_id):
     if request.method == 'POST':

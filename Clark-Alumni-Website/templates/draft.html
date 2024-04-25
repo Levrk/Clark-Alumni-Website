@@ -149,6 +149,13 @@
               {% endfor %}
             </div>
           </td>
+          <!-- Add submit button with form -->
+          <td>
+            <form action="{% url "submit_draft" draft.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </td>
         </tr>
         <tr>
           <td colspan="9" class="p-0">

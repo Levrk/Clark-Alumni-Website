@@ -28,6 +28,7 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("", views.home_screen, name="home"), #Seems deprecated, views.home used
     path("register/", views.register, name="register"),
+    path('submit_draft/<int:draft_id>/', views.submit_draft, name='submit_draft'),
     path(
         "viewrequests/",
         login_required(views.return_form_data, login_url="/login/"),
