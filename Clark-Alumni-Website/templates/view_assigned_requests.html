@@ -133,7 +133,6 @@
         <tr id="details{{ forloop.counter }}" class="collapse">
           <td colspan="9">
             <div class="card card-body">
-              <p><strong>Comments:</strong> {{ request.comments|default:'No comments' }}</p>
               {% if request.document_link %}
               <a href="{{ request.document_link }}">Document Link</a>
               {% else %}
@@ -145,7 +144,7 @@
               {% csrf_token %}
               <input type="hidden" name="status" value="submitted">
               <button type="submit" class="btn btn-danger unassign-button">Unassign</button>
-            </form>
+
 
               <!-- Close Request -->
               <form method="post" action="{% url 'status_change_closed' request.id %}">
@@ -163,6 +162,7 @@
     
 
   {% include "tableFunctions.html" %}
+  
 
   <!-- Modals for comments -->
   {% for request in assigned_requests %}
